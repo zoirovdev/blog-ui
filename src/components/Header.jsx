@@ -15,7 +15,7 @@ const Header = () => {
 	<MagnifyingGlassIcon className="w-6 h-6 ml-4"/>
         <input className="py-2 px-4 outline-none w-[500px]" placeholder="Search"/>
       </div>
-      <Link to="/" className="absolute right-[20px]">
+      <Link to="/profile" className="absolute right-[20px]">
 	<UserCircleIcon className="w-8 h-8 text-green-500"/>
       </Link>
     </div>

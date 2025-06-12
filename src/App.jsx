@@ -3,6 +3,11 @@ import './App.css'
 import { Routes, Route, Link } from 'react-router-dom'
 import Home from './components/Home.jsx'
 import Header from './components/Header.jsx'
+import PostCreate from './components/PostCreate.jsx'
+import Profile from './components/Profile.jsx'
+import Signup from './components/Signup.jsx'
+
+
 
 function App() {
   
@@ -11,6 +16,9 @@ function App() {
       <Header />
       <Routes>
         <Route path='/' element={<Home/>}/>
+	<Route path='/create' element={<PostCreate/>}/>
+	<Route path='/profile' element={<Profile/>}/>
+	<Route path='/signup' element={<Signup/>}/>
       </Routes>
     </div>
   )
