@@ -6,7 +6,7 @@ import Header from './components/Header.jsx'
 import PostCreate from './components/PostCreate.jsx'
 import Profile from './components/Profile.jsx'
 import Signup from './components/Signup.jsx'
-
+import Login from './components/Login.jsx'
 
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
 	<Route path='/create' element={<PostCreate/>}/>
 	<Route path='/profile' element={<Profile/>}/>
 	<Route path='/signup' element={<Signup/>}/>
+	<Route path='/login' element={<Login/>}/>
       </Routes>
     </div>
   )

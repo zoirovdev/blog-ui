@@ -48,7 +48,7 @@ const Home = () => {
   if (loading) return <div className="p-4">Loading...</div>
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
       
       {/* Posts List */}
