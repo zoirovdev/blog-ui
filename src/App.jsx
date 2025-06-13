@@ -8,6 +8,7 @@ import Signup from './components/Signup.jsx'
 import Login from './components/Login.jsx'
 import Profile from './components/Profile.jsx'
 import PostEdit from './components/PostEdit.jsx'
+import MyPosts from './components/MyPosts.jsx'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 	<Route path='/signup' element={<Signup/>}/>
 	<Route path='/login' element={<Login/>}/>
 	<Route path='/edit-post/:id' element={<PostEdit/>}/>
+	<Route path='/myposts' element={<MyPosts/>}/>
       </Routes>
     </div>
   )
