@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+
 
 const Home = () => {
   const [posts, setPosts] = useState([])
@@ -55,12 +57,14 @@ const Home = () => {
       <div className="space-y-6 mb-8">
         {posts.map(post => (
           <article key={post.id} className="border-b border-slate-400 pb-4">
+	    <Link to={`/edit-post/${post.id}`}>
             <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
             <p className="text-gray-800 mb-2">{post.content}</p>
             <div className="text-sm text-gray-800">
               By {post.author.firstName} {post.author.lastName} • 
               {new Date(post.createdAt).toLocaleDateString()}
             </div>
+	    </Link>
           </article>
         ))}
       </div>
