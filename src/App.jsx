@@ -9,6 +9,7 @@ import Login from './components/Login.jsx'
 import Profile from './components/Profile.jsx'
 import PostEdit from './components/PostEdit.jsx'
 import MyPosts from './components/MyPosts.jsx'
+import SearchResult from './components/SearchResult.jsx'
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
 	<Route path='/login' element={<Login/>}/>
 	<Route path='/edit-post/:id' element={<PostEdit/>}/>
 	<Route path='/myposts' element={<MyPosts/>}/>
+	<Route path='/search' element={<SearchResult/>}/>
       </Routes>
     </div>
   )
