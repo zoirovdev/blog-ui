@@ -35,9 +35,9 @@ const Header = () => {
   }
 
   return (
-    <div className="flex flex-row border-b-1 border-slate-300 p-4 gap-4 relative items-center">
+    <div className="flex flex-row border-b-1 border-slate-300 p-4 gap-2 relative items-center">
       <LightBulbIcon className="w-6 h-6 text-blue-400"/>
-      <h2 className="font-sans text-xl antialiased font-bold font-stretch-extra-condensed tracking-tight">Bloggy</h2>
+      <h2 className="font-sans text-xl antialiased font-bold font-stretch-extra-condensed tracking-tight">Dengiz</h2>
       <Link to="/" className="ml-8 font-sans text-lg font-medium">
 	Home
       </Link>
