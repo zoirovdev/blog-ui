@@ -72,8 +72,8 @@ const MyPosts = () => {
   if (loading) return <div className="p-4">Loading...</div>
   
   return (
-    <div className="bg-gray-50">
-      <div className="max-w-4xl mx-auto p-6 bg-white border-x border-slate-200">
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-4xl mx-auto p-6 bg-white border-x border-slate-200 min-h-screen">
         <h1 className="text-3xl font-bold mb-6">My Posts</h1>
         
         {/* Posts List */}
