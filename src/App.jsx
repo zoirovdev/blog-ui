@@ -10,6 +10,7 @@ import Profile from './components/Profile.jsx'
 import PostEdit from './components/PostEdit.jsx'
 import MyPosts from './components/MyPosts.jsx'
 import SearchResult from './components/SearchResult.jsx'
+import View from './components/View.jsx'
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
 	<Route path='/edit-post/:id' element={<PostEdit/>}/>
 	<Route path='/myposts' element={<MyPosts/>}/>
 	<Route path='/search' element={<SearchResult/>}/>
+	<Route path='/view/:id' element={<View/>}/>
       </Routes>
     </div>
   )
