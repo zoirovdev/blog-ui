@@ -2,11 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
   PencilSquareIcon, 
-  EyeIcon, 
-  DocumentIcon,
-  ArrowLeftIcon,
   CheckIcon,
-  XMarkIcon
 } from '@heroicons/react/24/outline'
 
 const New = () => {
@@ -107,12 +103,9 @@ const New = () => {
         }
         return
       }
-
-      // Post created successfully
-      console.log('Post created successfully:', data)
       
       // Show success message and redirect
-      alert(`Post "${data.title}" ${data.published ? 'published' : 'saved as draft'} successfully!`)
+      alert(`Post ${data.title} ${data.published ? 'published' : 'saved as draft'} successfully!`)
       navigate('/')
       
     } catch (error) {
@@ -123,17 +116,6 @@ const New = () => {
     }
   }
 
-  const handleSaveDraft = async () => {
-    setFormData(prev => ({ ...prev, published: false }))
-    // The form submission will handle the draft saving
-    document.getElementById('post-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
-  }
-
-  const handlePublish = async () => {
-    setFormData(prev => ({ ...prev, published: true }))
-    // The form submission will handle the publishing
-    document.getElementById('post-form').dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
-  }
 
   const formatPreviewContent = (content) => {
     return content.split('\n').map((paragraph, index) => (
@@ -150,37 +132,16 @@ const New = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <button
-                onClick={() => navigate(-1)}
-                className="mr-4 p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md"
-              >
-                <ArrowLeftIcon className="h-5 w-5" />
-              </button>
               <div className="flex items-center">
                 <PencilSquareIcon className="h-8 w-8 text-blue-600 mr-3" />
                 <h1 className="text-2xl font-bold text-gray-900">Create New Post</h1>
               </div>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setPreview(!preview)}
-                className={`inline-flex items-center px-3 py-2 border text-sm font-medium rounded-md ${
-                  preview 
-                    ? 'border-blue-300 text-blue-700 bg-blue-50' 
-                    : 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
-                }`}
-              >
-                <EyeIcon className="h-4 w-4 mr-1" />
-                {preview ? 'Edit' : 'Preview'}
-              </button>
             </div>
           </div>
         </div>
 
         {/* Form */}
         <div className="bg-white shadow rounded-lg">
-          {!preview ? (
             <form id="post-form" onSubmit={handleSubmit} className="p-6">
               {errors.general && (
                 <div className="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
@@ -191,7 +152,7 @@ const New = () => {
               {/* Title */}
               <div className="mb-6">
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                  Post Title
+                  Title
                 </label>
                 <input
                   id="title"
@@ -199,9 +160,9 @@ const New = () => {
                   type="text"
                   value={formData.title}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border ${
+                  className={`w-full px-3 py-2 border rounded-[10px] ${
                     errors.title ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                  } placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
                   placeholder="Enter your post title..."
                 />
                 {errors.title && (
@@ -215,7 +176,7 @@ const New = () => {
               {/* Content */}
               <div className="mb-6">
                 <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-                  Post Content
+                 Content
                 </label>
                 <textarea
                   id="content"
@@ -225,7 +186,7 @@ const New = () => {
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
                     errors.content ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                  } rounded-[10px] placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
                   placeholder="Write your post content here..."
                 />
                 {errors.content && (
@@ -271,20 +232,6 @@ const New = () => {
 
                 <div className="flex space-x-3">
                   <button
-                    type="button"
-                    onClick={handleSaveDraft}
-                    disabled={loading}
-                    className={`px-4 py-2 border border-gray-300 text-sm font-medium rounded-md ${
-                      loading 
-                        ? 'text-gray-400 bg-gray-100 cursor-not-allowed' 
-                        : 'text-gray-700 bg-white hover:bg-gray-50'
-                    }`}
-                  >
-                    <DocumentIcon className="h-4 w-4 inline mr-1" />
-                    Save Draft
-                  </button>
-                  
-                  <button
                     type="submit"
                     disabled={loading}
                     className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
@@ -302,34 +249,7 @@ const New = () => {
                 </div>
               </div>
             </form>
-          ) : (
-            /* Preview Mode */
-            <div className="p-6">
-              <div className="border-b border-gray-200 pb-4 mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {formData.title || 'Untitled Post'}
-                </h1>
-                <div className="flex items-center text-sm text-gray-500">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                    formData.published 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {formData.published ? 'Published' : 'Draft'}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="prose max-w-none text-gray-900">
-                {formData.content ? (
-                  formatPreviewContent(formData.content)
-                ) : (
-                  <p className="text-gray-500 italic">No content yet...</p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
       </div>
     </div>
   )
