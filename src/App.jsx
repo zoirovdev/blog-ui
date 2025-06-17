@@ -11,6 +11,9 @@ import PostEdit from './components/PostEdit.jsx'
 import MyPosts from './components/MyPosts.jsx'
 import SearchResult from './components/SearchResult.jsx'
 import View from './components/View.jsx'
+import Sidebar from './components/Sidebar.jsx'
+
+
 
 
 function App() {
@@ -18,6 +21,7 @@ function App() {
   return (
     <div className="">
       <Header />
+      <Sidebar />
       <Routes>
         <Route path='/' element={<Home/>}/>
 	<Route path='/new' element={<New/>}/>
