@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom'
 import { UserIcon, MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { LightBulbIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom' 
+import { useNavigate, useLocation } from 'react-router-dom' 
 import { Tooltip } from 'react-tooltip'
 
 
 const Header = () => {
   const [searchVal, setSearchVal] = useState('')
   const navigate = useNavigate()
+  const location = useLocation()
 
   const handleEnter = (e) => {
     if(event.key === 'Enter'){
@@ -48,11 +49,13 @@ const Header = () => {
 	  />
       </div>
       <Link to="/new" className="" data-tooltip-id="new-post" data-tooltip-content="Create new post">
-        <PlusIcon className="w-10 h-10 p-1 rounded-[10px] border border-slate-300 hover:shadow-sm"/>
+        <PlusIcon className={`w-10 h-10 p-1 rounded-[10px] border border-slate-300 hover:shadow-sm 
+          ${location.pathname === '/new' ? 'bg-gray-300' : ''}`}/>
       </Link>
       <Link to="/profile" className="absolute right-[20px]" 
 	data-tooltip-id="profile" data-tooltip-content="Profile">
-	<UserIcon className="w-10 h-10 border border-slate-300 p-2 rounded-[10px] hover:shadow-sm"/>
+	<UserIcon className={`w-10 h-10 border border-slate-300 p-2 rounded-[10px] hover:shadow-sm
+	  ${location.pathname === '/profile' ? 'bg-gray-300' : ''}`}/>
       </Link>
 
       <Tooltip id="new-post"/>

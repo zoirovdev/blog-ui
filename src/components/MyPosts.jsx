@@ -73,7 +73,7 @@ const MyPosts = () => {
   
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto p-6 bg-white border-x border-slate-200 min-h-screen">
+      <div className="max-w-4xl mx-auto p-6 bg-white border-x border-slate-200 min-h-screen mt-[50px]">
         <h1 className="text-3xl font-bold mb-6">My Posts</h1>
         
         {/* Posts List */}
