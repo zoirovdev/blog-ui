@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { UserIcon } from '@heroicons/react/24/outline'
+import { 
+UserIcon, 
+HeartIcon, 
+BookmarkIcon,
+PaperAirplaneIcon, 
+ChatBubbleOvalLeftIcon,
+Bars4Icon
+} from '@heroicons/react/24/outline'
 
 
 const View = () => {
@@ -8,6 +15,21 @@ const View = () => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState({})
+ 
+  // below comments are temporary it will be removed 
+  // cause we don't need extra comments, comments automatically come with post
+  const [comments, setComments] = useState([
+  {
+    id: 1,
+    author: 'abbos',
+    txt: 'Good article'
+  },
+  {
+    id: 2,
+    author: 'mahmud',
+    txt: 'Very good content'
+  }
+  ])
 	
   const getPost = async () => {
     try {
@@ -23,7 +45,7 @@ const View = () => {
       })
 
       const data = await response.json()
-
+	
       if(!response.ok){
 	if(response.status === 404){
 	  setError('Post not found')
@@ -51,7 +73,7 @@ const View = () => {
 
   console.log(post)
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col mt-[50px]">
+    <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
       <div className="bg-white w-[880px] min-h-screen py-8 px-10 ml-[60px]">
 	<p className="mb-4 p-4 text-xl font-bold text-left">{post.title}</p>
 	<div className="flex flex-row items-center mb-2 text-gray-600">
@@ -67,6 +89,39 @@ const View = () => {
             </div>
           ))}
         </div>      
+      </div>
+
+
+      <div className="m-5 flex flex-col gap-4">
+        <div className="w-[360px] flex flex-row bg-white py-4 px-6 gap-6 rounded-[10px]">
+	  <div className="flex flex-row gap-2">
+	    <HeartIcon className="w-6 h-6"/>
+	    <p>12</p>
+	  </div>
+	  <div className="flex flex-row gap-2">
+            <BookmarkIcon className="w-6 h-6"/>
+	    <p>24</p>
+	  </div>
+	  <div className="flex flex-row gap-2">
+	    <PaperAirplaneIcon className="w-6 h-6"/>
+	    <p>7</p>
+	  </div>
+	  <div className="flex flex-row gap-2">
+	    <ChatBubbleOvalLeftIcon className="w-6 h-6"/>
+	    <p>20</p>
+	  </div>
+	  <div className="flex flex-row">
+	    <Bars4Icon className="w-6 h-6"/>
+          </div>
+	</div>
+	<div className="flex flex-col gap-2">
+	  {comments.map((comment) => (
+	    <div className="bg-white p-[10px]" key={comment.id}>
+              <p className="text-sm">@{comment.author}</p>
+              <p className="text-md">{comment.txt}</p>
+	    </div>
+	  ))}
+	</div>
       </div>
     </div>
   )
