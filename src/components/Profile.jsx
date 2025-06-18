@@ -112,10 +112,6 @@ const Profile = () => {
 	  justify-center border border-slate-300 rounded-[50%]">
 	  <UserIcon className="w-20 h-20 text-blue-500"/>
 	</div>
-	{editing && 
-	<div className="bg-gray-400 bg-blend-soft-light w-[100%] h-[100%]">
-	  Editing
-	</div>}
 	<div className="w-[500px] h-[240px] flex flex-col gap-4">
 	  <div className="flex justify-between border-b border-b-slate-300">
 	    <p className="text-gray-500">Firstname</p>
@@ -147,9 +143,7 @@ const Profile = () => {
 	  </button>
 	  <button className="flex flex-row items-center gap-[5px] 
 	    px-[12px] py-[5px] rounded-[5px] border border-slate-300 hover:shadow-sm cursor-pointer"
-	    onClick={() => {
-	      handleEdit();
-	      setEditing(true);}}>
+	    onClick={handleEdit}>
 	    <p>Edit</p>
 	    <PencilIcon className="w-5 h-5"/>
 	  </button>
