@@ -51,17 +51,22 @@ const View = () => {
 
   console.log(post)
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center">
-      <div className="bg-white w-[800px] min-h-screen p-8">
-	<div className="flex flex-row items-center relative mb-6">
-          <UserIcon className="w-10 h-10 border-2 border-violet-500 text-blue-500 rounded-[50%] p-2"/>
-	  <p className="ml-4">{post.author.username}</p>
-	  <time className="absolute right-4 text-sm border-t-2 border-t-cyan-300 p-2">
-	    {new Date(post.createdAt).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}
+    <div className="bg-gray-100 min-h-screen flex flex-col mt-[50px]">
+      <div className="bg-white w-[880px] min-h-screen py-8 px-10 ml-[60px]">
+	<p className="mb-4 p-4 text-xl font-bold text-left">{post.title}</p>
+	<div className="flex flex-row items-center mb-2 text-gray-600">
+	  <p className="ml-4 text-md">By @{post.author.username}</p>
+	  <time className="text-md p-2">
+	    | on {new Date(post.createdAt).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}
 	  </time>
 	</div>
-	<p className="mb-4 p-2 text-lg font-bold text-center border-l-2 border-l-orange-300">{post.title}</p>
-	<p className="text-justify p-6 border-l-2 border-l-green-300">{post.content}</p>
+	<div className="text-justify p-4 text-lg">
+  	  {post.content.split('\n').map((line, index) => (
+    	    <div key={index} className="mb-4">
+              {line || '\u00A0'}
+            </div>
+          ))}
+        </div>      
       </div>
     </div>
   )
