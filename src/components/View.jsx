@@ -4,16 +4,18 @@ import {
 UserIcon, 
 HeartIcon as HeartIconOutline, 
 BookmarkIcon as BookmarkIconOutline,
-PaperAirplaneIcon, 
+PaperAirplaneIcon as AirplaneOutline, 
 ChatBubbleOvalLeftIcon,
 Bars4Icon,
-EyeIcon as EyeIconOutline
+EyeIcon as EyeIconOutline,
+XMarkIcon
 } from '@heroicons/react/24/outline'
 
 import {
 HeartIcon as HeartIconSolid,
 BookmarkIcon as BookmarkIconSolid,
-EyeIcon as EyeIconSolid
+EyeIcon as EyeIconSolid,
+PaperAirplaneIcon as AirplaneSolid
 } from '@heroicons/react/24/solid'
 
 
@@ -24,6 +26,8 @@ const View = () => {
   const [post, setPost] = useState({})
   const [like, setLike] = useState({})
   const [save, setSave] = useState({})
+  const [share, setShare] = useState({})
+  const [shareModal, setShareModal] = useState(false)
 
  
   // below comments are temporary it will be removed 
@@ -218,16 +222,93 @@ const View = () => {
     postSave()
   }
 
+  const getShare = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found.Unauthorized');
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id is not found')
+        return
+      } 
+
+      const response = await fetch(`http://localhost:8000/api/posts/${id}/share-status?userId=${user.id}`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setShare(data)
+    } catch (error) {
+      console.error('Failed to load', error.message)
+    }
+  }
+
+  const postShare = async () => {
+    try {
+      const userStr = localStorage.getItem('user');
+      if(!userStr){
+	console.error('User not found.Unauthorized', error)
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id is not found', error)
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/posts/share`, {
+        method: 'POST',
+	headers: {
+      	  "Content-Type": 'application/json'
+	},
+	body: JSON.stringify({
+          postId: id,
+	  userId: user.id
+	})
+      })
+
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json()
+      setShare(data)
+      return data
+    } catch (error) {
+      console.error('Failed to load', error);
+    }
+  }
+
+  const handleShare = () => {
+    setShareModal(true)
+  }
+
+  const copyToClipboard = async () => {
+    await postShare()
+
+    const url = window.location.href;
+    await navigator.clipboard.writeText(url)
+    alert('Link copied to clipboard')
+    setShareModal(false)
+  }
+
   useEffect(() => {
     getPost()
     getLike()
     getSave()
+    getShare()
   }, [id])
 
   if(loading) return <div className="p-4">Loading...</div>
   if(error) return <div className="p-4 text-red-500">{error}</div>
 
-  console.log(save)
+  console.log(share)
   console.log(post)
   return (
     <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
@@ -270,8 +351,13 @@ const View = () => {
 	    <p>{save.saveCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
-	    <PaperAirplaneIcon className="w-6 h-6"/>
-	    <p>7</p>
+	    {share.shared 
+	      ? <AirplaneSolid className="w-6 h-6 cursor-pointer text-blue-600"
+	          onClick={() => handleShare()}/>
+	      : <AirplaneOutline className="w-6 h-6 cursor-pointer" 
+		  onClick={() => handleShare()}/>
+	    }
+	    <p>{share.shareCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
 	    <ChatBubbleOvalLeftIcon className="w-6 h-6"/>
@@ -291,6 +377,36 @@ const View = () => {
 	  ))}
 	</div>
       </div>
+      {/* Share Modal */}
+      {shareModal && (
+        <div className="fixed inset-0 bg-opacity-50 backdrop-brightness-50 flex items-center justify-center z-50">
+          <div className="bg-gray-200 rounded-lg p-6 w-96 max-w-md mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">
+	        {share.shared ? 'Shared post' : 'Share post'}
+	      </h3>
+              <XMarkIcon 
+                className="w-6 h-6 cursor-pointer hover:text-gray-600" 
+                onClick={() => setShareModal(false)}
+              />
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3 p-3 border rounded-lg bg-gray-50">
+                <span className="text-sm text-gray-600 flex-1 truncate">
+                  {window.location.href}
+                </span>
+                <button 
+                  onClick={copyToClipboard}
+                  className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 cursor-pointer"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
