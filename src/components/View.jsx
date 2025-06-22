@@ -6,12 +6,14 @@ HeartIcon as HeartIconOutline,
 BookmarkIcon as BookmarkIconOutline,
 PaperAirplaneIcon, 
 ChatBubbleOvalLeftIcon,
-Bars4Icon
+Bars4Icon,
+EyeIcon as EyeIconOutline
 } from '@heroicons/react/24/outline'
 
 import {
 HeartIcon as HeartIconSolid,
-BookmarkIcon as BookmarkIconSolid
+BookmarkIcon as BookmarkIconSolid,
+EyeIcon as EyeIconSolid
 } from '@heroicons/react/24/solid'
 
 
@@ -275,8 +277,9 @@ const View = () => {
 	    <ChatBubbleOvalLeftIcon className="w-6 h-6"/>
 	    <p>20</p>
 	  </div>
-	  <div className="flex flex-row">
-	    <Bars4Icon className="w-6 h-6"/>
+	  <div className="flex flex-row gap-2">
+	    <EyeIconOutline className="w-6 h-6"/>
+	    <p>10</p>
           </div>
 	</div>
 	<div className="flex flex-col gap-2">
