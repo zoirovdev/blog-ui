@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { 
 UserIcon, 
-HeartIcon, 
+HeartIcon as HeartIconOutline, 
 BookmarkIcon,
 PaperAirplaneIcon, 
 ChatBubbleOvalLeftIcon,
 Bars4Icon
 } from '@heroicons/react/24/outline'
+
+import {
+HeartIcon as HeartIconSolid
+} from '@heroicons/react/24/solid'
 
 
 const View = () => {
@@ -15,6 +19,8 @@ const View = () => {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState({})
+  const [like, setLike] = useState({})
+
  
   // below comments are temporary it will be removed 
   // cause we don't need extra comments, comments automatically come with post
@@ -64,8 +70,78 @@ const View = () => {
     }
   }
 
+  const getLike = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.log('No user found in localStorage')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.log('User ID not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/posts/${id}/like-status?userId=${user.id}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setLike(data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const postLike = async () => {
+    try {
+      const userString = localStorage.getItem('user')
+      if (!userString) {
+        console.log('No user found in localStorage')
+        return
+      }
+     
+      const user = JSON.parse(userString)
+      if (!user.id) {
+        console.log('User ID not found')
+        return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/posts/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          postId: id,
+          userId: user.id
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+          
+      // Update local state after successful like
+      setLike(data) // or however you want to update the like state
+    
+    } catch (error) {
+      console.log('Error posting like:', error);
+    }
+  }
+
+  const handleLike = () => {
+    postLike()
+  }
+
   useEffect(() => {
     getPost()
+    getLike()
   }, [id])
 
   if(loading) return <div className="p-4">Loading...</div>
@@ -95,8 +171,13 @@ const View = () => {
       <div className="m-5 flex flex-col gap-4">
         <div className="w-[360px] flex flex-row bg-white py-4 px-6 gap-6 rounded-[10px]">
 	  <div className="flex flex-row gap-2">
-	    <HeartIcon className="w-6 h-6"/>
-	    <p>12</p>
+	    {like.liked 
+	      ? <HeartIconSolid className={`w-6 h-6 cursor-pointer text-red-600`}
+	        onClick={() => { handleLike() }}/>
+	      : <HeartIconOutline className='w-6 h-6 cursor-pointer'
+	        onClick={() => { handleLike() }}/>
+	    }
+	    <p>{like.likeCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
             <BookmarkIcon className="w-6 h-6"/>
