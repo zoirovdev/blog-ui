@@ -6,7 +6,6 @@ HeartIcon as HeartIconOutline,
 BookmarkIcon as BookmarkIconOutline,
 PaperAirplaneIcon as AirplaneOutline, 
 ChatBubbleOvalLeftIcon,
-Bars4Icon,
 EyeIcon as EyeIconOutline,
 XMarkIcon
 } from '@heroicons/react/24/outline'
@@ -294,7 +293,7 @@ const View = () => {
 
     const url = window.location.href;
     await navigator.clipboard.writeText(url)
-    alert('Link copied to clipboard')
+
     setShareModal(false)
   }
 
@@ -308,8 +307,7 @@ const View = () => {
   if(loading) return <div className="p-4">Loading...</div>
   if(error) return <div className="p-4 text-red-500">{error}</div>
 
-  console.log(share)
-  console.log(post)
+
   return (
     <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
       <div className="bg-white w-[880px] min-h-screen py-8 px-10 ml-[60px]">
