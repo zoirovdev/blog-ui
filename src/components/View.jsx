@@ -3,14 +3,15 @@ import { useParams } from 'react-router-dom'
 import { 
 UserIcon, 
 HeartIcon as HeartIconOutline, 
-BookmarkIcon,
+BookmarkIcon as BookmarkIconOutline,
 PaperAirplaneIcon, 
 ChatBubbleOvalLeftIcon,
 Bars4Icon
 } from '@heroicons/react/24/outline'
 
 import {
-HeartIcon as HeartIconSolid
+HeartIcon as HeartIconSolid,
+BookmarkIcon as BookmarkIconSolid
 } from '@heroicons/react/24/solid'
 
 
@@ -20,6 +21,7 @@ const View = () => {
   const [loading, setLoading] = useState(true)
   const [post, setPost] = useState({})
   const [like, setLike] = useState({})
+  const [save, setSave] = useState({})
 
  
   // below comments are temporary it will be removed 
@@ -139,14 +141,91 @@ const View = () => {
     postLike()
   }
 
+  const getSave = async () => {
+    try {
+      
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.log('No user found in localStorage')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.log('User ID not found')
+	return
+      }
+      
+      const response = await fetch(`http://localhost:8000/api/posts/${id}/save-status?userId=${user.id}`);
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setSave(data)
+    } catch (error) {
+      console.error('Something went wrong', error);
+    }
+  }
+
+  const postSave = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if(!token){
+	console.log('Token not found')
+	return
+      }
+
+      const userStr = localStorage.getItem('user');
+      if(!userStr){
+	console.log('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.log('User id not found');
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/posts/save`, {
+        method: 'POST',
+	headers: {
+          "Content-Type": "application/json",
+	  "Authorization": `Bearer ${token}`
+	},
+	body: JSON.stringify({
+	  postId: id,
+	  userId: user.id
+	})
+      })
+
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json()
+
+      setSave(data)
+    } catch (error) {
+      console.error('Failed to load', error)
+    }
+  }
+
+  const handleSave = () => {
+    postSave()
+  }
+
   useEffect(() => {
     getPost()
     getLike()
+    getSave()
   }, [id])
 
   if(loading) return <div className="p-4">Loading...</div>
   if(error) return <div className="p-4 text-red-500">{error}</div>
 
+  console.log(save)
   console.log(post)
   return (
     <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
@@ -180,8 +259,13 @@ const View = () => {
 	    <p>{like.likeCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
-            <BookmarkIcon className="w-6 h-6"/>
-	    <p>24</p>
+	    {save.saved 
+              ? <BookmarkIconSolid className="w-6 h-6 cursor-pointer text-green-600"
+	         onClick={() => handleSave()}/>
+	      : <BookmarkIconOutline className="w-6 h-6 cursor-pointer"
+	         onClick={() => handleSave()}/>
+	    }
+	    <p>{save.saveCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
 	    <PaperAirplaneIcon className="w-6 h-6"/>
