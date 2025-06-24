@@ -27,23 +27,15 @@ const View = () => {
   const [save, setSave] = useState({})
   const [share, setShare] = useState({})
   const [shareModal, setShareModal] = useState(false)
-
- 
-  // below comments are temporary it will be removed 
-  // cause we don't need extra comments, comments automatically come with post
-  const [comments, setComments] = useState([
-  {
-    id: 1,
-    author: 'abbos',
-    txt: 'Good article'
-  },
-  {
-    id: 2,
-    author: 'mahmud',
-    txt: 'Very good content'
-  }
-  ])
-	
+  const [comments, setComments] = useState([])
+  const [comment, setComment] = useState({
+    content: '',
+    user: {},
+    id: ''
+  })
+  const [commentModal, setCommentModal] = useState(false)
+  const [commentCount, setCommentCount] = useState(0)
+  	
   const getPost = async () => {
     try {
       setLoading(true)
@@ -297,17 +289,98 @@ const View = () => {
     setShareModal(false)
   }
 
+
+  const getComments = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/posts/${id}/comments?userId=${user.id}`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setComments(data.comments)
+      setCommentCount(data.commentCount)
+    } catch (error) {
+      console.error('Failed to load', error)
+    }
+  }
+
+
+  const createComment = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('Failed to get user from localStorage')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id is not valid')
+	return
+      }
+
+      comment.postId = parseInt(id)
+      comment.userId = user.id
+	
+      const response = await fetch(`http://localhost:8000/api/posts/comment`, {
+        method: 'POST',
+	headers: {
+          'Content-Type': 'application/json'
+	},
+	body: JSON.stringify({
+	  content: comment.content,
+	  postId: comment.postId,
+	  userId: comment.userId
+	})
+      })
+
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setComment(data)
+      await getComments()
+    } catch (error) {
+      console.error('Failed to load');
+    }
+  }
+
+
+  const handleComment = () => {
+    setCommentModal(true)
+  }
+
+  const handleTextarea = (val) => {
+    setComment({...comment, content: val});
+  }
+
+
   useEffect(() => {
     getPost()
     getLike()
     getSave()
     getShare()
+    getComments()
   }, [id])
 
   if(loading) return <div className="p-4">Loading...</div>
   if(error) return <div className="p-4 text-red-500">{error}</div>
 
-
+  console.log(comments)
   return (
     <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
       <div className="bg-white w-[880px] min-h-screen py-8 px-10 ml-[60px]">
@@ -358,8 +431,9 @@ const View = () => {
 	    <p>{share.shareCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
-	    <ChatBubbleOvalLeftIcon className="w-6 h-6"/>
-	    <p>20</p>
+	    <ChatBubbleOvalLeftIcon className="w-6 h-6 cursor-pointer" 
+	      onClick={() => handleComment()}/>
+	    <p>{commentCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
 	    <EyeIconOutline className="w-6 h-6"/>
@@ -367,10 +441,10 @@ const View = () => {
           </div>
 	</div>
 	<div className="flex flex-col gap-2">
-	  {comments.map((comment) => (
+	  {comments?.map((comment) => (
 	    <div className="bg-white p-[10px]" key={comment.id}>
-              <p className="text-sm">@{comment.author}</p>
-              <p className="text-md">{comment.txt}</p>
+              <p className="text-sm">@{comment.user.username}</p>
+              <p className="text-md">{comment.content}</p>
 	    </div>
 	  ))}
 	</div>
@@ -405,6 +479,44 @@ const View = () => {
           </div>
         </div>
       )}
+
+	{/* Comment modal */}
+	{commentModal && (
+        <div className="fixed inset-0 bg-opacity-50 backdrop-brightness-50 flex items-center justify-center z-50">
+          <div className="bg-gray-200 rounded-lg p-6 w-[500px] max-w-md mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">
+	        Write comment
+	      </h3>
+              <XMarkIcon 
+                className="w-6 h-6 cursor-pointer hover:text-gray-600" 
+                onClick={() => setCommentModal(false)}
+              />
+            </div>
+            
+            <div className="flex flex-col space-y-4">
+              <textarea rows="5" cols="25" 
+		className="outline-none p-4 border border-slate-400 rounded-[5px]"
+		placeholder="Enter your message here..."
+		value={comment.content}
+		onChange={(e) => {
+		  handleTextarea(e.target.value);
+		}}>
+	      </textarea>
+              <button className="px-3 py-1 bg-blue-500 text-white 
+		text-sm rounded hover:bg-blue-600 cursor-pointer"
+		onClick={() => {
+		  createComment()
+		  setComment({ content: '' })
+		  setCommentModal(false)
+		}}>
+                  Write
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
