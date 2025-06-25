@@ -35,7 +35,8 @@ const View = () => {
   })
   const [commentModal, setCommentModal] = useState(false)
   const [commentCount, setCommentCount] = useState(0)
-  	
+  const [readNum, setReadNum] = useState(0)	
+
   const getPost = async () => {
     try {
       setLoading(true)
@@ -369,8 +370,62 @@ const View = () => {
   }
 
 
+  const getReadNum = async () => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/posts/${id}/read`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setReadNum(data.readCount)
+    } catch (error) {
+      console.error('Failed to load')
+    }
+  }
+
+
+  const postRead = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/posts/read`, {
+        method: 'POST',
+	headers: {
+	  "Content-Type": 'application/json'
+	},
+	body: JSON.stringify({
+          postId: id,
+	  userId: user.id
+	})
+      })
+
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setReadNum(data.readCount)
+      await getReadNum()
+    } catch (error) {
+      console.error('Something went wrong')
+    }
+  }
+
+
   useEffect(() => {
     getPost()
+    postRead()
     getLike()
     getSave()
     getShare()
@@ -380,7 +435,7 @@ const View = () => {
   if(loading) return <div className="p-4">Loading...</div>
   if(error) return <div className="p-4 text-red-500">{error}</div>
 
-  console.log(comments)
+  
   return (
     <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
       <div className="bg-white w-[880px] min-h-screen py-8 px-10 ml-[60px]">
@@ -437,7 +492,7 @@ const View = () => {
 	  </div>
 	  <div className="flex flex-row gap-2">
 	    <EyeIconOutline className="w-6 h-6"/>
-	    <p>10</p>
+	    <p>{readNum}</p>
           </div>
 	</div>
 	<div className="flex flex-col gap-2">
