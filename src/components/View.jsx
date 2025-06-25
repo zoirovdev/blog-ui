@@ -443,7 +443,14 @@ const View = () => {
 	<div className="flex flex-col gap-2">
 	  {comments?.map((comment) => (
 	    <div className="bg-white p-[10px]" key={comment.id}>
-              <p className="text-sm">@{comment.user.username}</p>
+	      <div className="flex flex-row items-center relative">
+                <p className="text-sm">@{comment.user.username}</p>
+	        <p className="text-[13px] absolute right-2">
+		  {new Date(comment.createdAt)
+		    .toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})
+	          }
+	        </p>
+	      </div>
               <p className="text-md">{comment.content}</p>
 	    </div>
 	  ))}
