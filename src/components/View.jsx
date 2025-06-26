@@ -437,8 +437,8 @@ const View = () => {
 
   
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-row mt-[50px]">
-      <div className="bg-white w-[880px] min-h-screen py-8 px-10 ml-[60px]">
+    <div className="bg-gray-100 min-h-screen flex flex-col pl-[200px] pt-[100px] pb-[50px] gap-4">
+      <div className="bg-white w-[880px] min-h-screen py-8 px-10">
 	<p className="mb-4 p-4 text-xl font-bold text-left">{post.title}</p>
 	<div className="flex flex-row items-center mb-2 text-gray-600">
 	  <p className="ml-4 text-md">By @{post.author.username}</p>
@@ -456,9 +456,10 @@ const View = () => {
       </div>
 
 
-      <div className="m-5 flex flex-col gap-4">
-        <div className="w-[360px] flex flex-row bg-white py-4 px-6 gap-6 rounded-[10px]">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-row justify-between bg-white w-[880px] py-4 px-15 rounded-[10px]">
 	  <div className="flex flex-row gap-2">
+	    <p>Like</p>
 	    {like.liked 
 	      ? <HeartIconSolid className={`w-6 h-6 cursor-pointer text-red-600`}
 	        onClick={() => { handleLike() }}/>
@@ -468,6 +469,7 @@ const View = () => {
 	    <p>{like.likeCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
+	    <p>Save</p>
 	    {save.saved 
               ? <BookmarkIconSolid className="w-6 h-6 cursor-pointer text-green-600"
 	         onClick={() => handleSave()}/>
@@ -477,6 +479,7 @@ const View = () => {
 	    <p>{save.saveCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
+	    <p>Share</p>
 	    {share.shared 
 	      ? <AirplaneSolid className="w-6 h-6 cursor-pointer text-blue-600"
 	          onClick={() => handleShare()}/>
@@ -486,18 +489,20 @@ const View = () => {
 	    <p>{share.shareCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
+	    <p>Comment</p>
 	    <ChatBubbleOvalLeftIcon className="w-6 h-6 cursor-pointer" 
 	      onClick={() => handleComment()}/>
 	    <p>{commentCount}</p>
 	  </div>
 	  <div className="flex flex-row gap-2">
+	    <p>Reads</p>
 	    <EyeIconOutline className="w-6 h-6"/>
 	    <p>{readNum}</p>
           </div>
 	</div>
 	<div className="flex flex-col gap-2">
 	  {comments?.map((comment) => (
-	    <div className="bg-white p-[10px]" key={comment.id}>
+	    <div className="bg-white py-[10px] px-15 max-w-[880px]" key={comment.id}>
 	      <div className="flex flex-row items-center relative">
                 <p className="text-sm">@{comment.user.username}</p>
 	        <p className="text-[13px] absolute right-2">

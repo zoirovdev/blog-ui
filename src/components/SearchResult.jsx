@@ -25,7 +25,7 @@ const SearchResult = () => {
             data.results.map(post => (
               <article key={post.id} className="border-b border-slate-400 pb-4">
                 <Link 
-                  to={`/edit-post/${post.id}`}
+                  to={`/view/${post.id}`}
                   className="block hover:bg-gray-50 p-2 -m-2 rounded transition-colors"
                 >
                   <h2 className="text-xl font-semibold mb-2 text-blue-600 hover:text-blue-800">

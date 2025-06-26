@@ -48,17 +48,13 @@ const Header = () => {
 	  onKeyDown={handleEnter}
 	  />
       </div>
-      <Link to="/new" className="" data-tooltip-id="new-post" data-tooltip-content="Create new post">
-        <PlusIcon className={`w-10 h-10 p-1 rounded-[10px] border border-slate-300 hover:shadow-sm 
-          ${location.pathname === '/new' ? 'bg-gray-300' : ''}`}/>
-      </Link>
       <Link to="/profile" className="absolute right-[20px]" 
 	data-tooltip-id="profile" data-tooltip-content="Profile">
-	<UserIcon className={`w-10 h-10 border border-slate-300 p-2 rounded-[10px] hover:shadow-sm
-	  ${location.pathname === '/profile' ? 'bg-gray-300' : ''}`}/>
+	<UserIcon className={`w-10 h-10 border border-slate-300 p-2 rounded-[50%] hover:shadow-sm
+	  ${location.pathname === '/profile' ? 'bg-gray-100' : ''}`}/>
       </Link>
 
-      <Tooltip id="new-post"/>
+
       <Tooltip id="profile"/>
     </div>
   )
