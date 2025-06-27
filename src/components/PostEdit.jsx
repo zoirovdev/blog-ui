@@ -163,14 +163,14 @@ const PostEdit = () => {
               type="submit"
               className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
             >
-              Update Post
+              Update
             </button>
             <button 
               type="button"
               onClick={handleDelete}
               className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
             >
-              Delete Post
+              Delete
             </button>
             <button 
               type="button"
