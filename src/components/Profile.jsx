@@ -19,7 +19,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [editing, setEditing] = useState(false)
-  const [editFormData, setEditFormData] = useState({})
+  const [formData, setFormData] = useState({})
 
   useEffect(() => {
     fetchProfile()
@@ -55,10 +55,9 @@ const Profile = () => {
 
       const userData = await response.json()
       setUser(userData)
-      setEditFormData({
+      setFormData({
         firstName: userData.firstName,
         lastName: userData.lastName,
-        username: userData.username
       })
     } catch (error) {
       console.error('Profile fetch error:', error)
@@ -74,15 +73,54 @@ const Profile = () => {
     navigate('/login')
   }
 
-  const handleEdit = () => {
-    console.log('Edit')
+  const updateUser = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
+        method: 'PUT',
+	headers: {
+	  "Content-Type": 'application/json'
+	},
+ 	body: JSON.stringify({
+	  firstName: formData.firstName,
+	  lastName: formData.lastName
+	})
+      })
+
+      if(!response.ok){ 
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      setUser(data)
+    } catch (error) {
+      console.error('Something went wrong!')
+    }
+  }
+
+
+  const handleForm = async () => {
+    await updateUser()
+    setEditing(false)
   }
 
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600">Loading...</div>
       </div>
     )
   }
@@ -143,7 +181,7 @@ const Profile = () => {
 	  </button>
 	  <button className="flex flex-row items-center gap-[5px] 
 	    px-[12px] py-[5px] rounded-[5px] border border-slate-300 hover:shadow-sm cursor-pointer"
-	    onClick={handleEdit}>
+	    onClick={() => setEditing(true)}>
 	    <p>Edit</p>
 	    <PencilIcon className="w-5 h-5"/>
 	  </button>
@@ -158,6 +196,34 @@ const Profile = () => {
 	    <DocumentDuplicateIcon className="w-5 h-5"/>
 	  </Link>
 	</div>
+
+	{editing && 
+	  <div className="fixed inset-0 bg-opacity-50 backdrop-brightness-50 
+	    flex items-center justify-center z-50">
+	    <div className="bg-white w-[600px] h-[250px] rounded-[5px] p-4">
+	      <div className="flex flex-row justify-between"> 
+	        <p>Edit</p>
+                <XMarkIcon className="w-6 h-6 cursor-pointer 
+		  hover:rounded-[50%] hover:p hover:bg-gray-200" 
+		  onClick={() => setEditing(false)}/>
+	      </div>
+	      <div className="flex flex-col my-6 gap-4">
+		<input 
+	          type="text" 
+		  className="outline-none border border-slate-300 rounded-[5px] p-2" 
+		  placeholder="Firstname"
+		  onChange={(e) => setFormData({...formData, firstName: e.target.value})}/>
+		<input 
+		  type="text" 
+		  className="outline-none border border-slate-300 rounded-[5px] p-2" 
+		  placeholder="Lastname"
+		  onChange={(e) => setFormData({...formData, lastName: e.target.value})}/>
+		<button type="submit" className="bg-blue-400 text-white p-2 rounded-[5px]"
+		  onClick={() => { handleForm(); }}>Save</button>
+	      </div>
+	    </div>
+	  </div>
+	}
     </div>
   )
 }
