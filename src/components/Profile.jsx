@@ -10,7 +10,10 @@ import {
   CheckIcon,
   XMarkIcon,
   PlusIcon,
-  DocumentDuplicateIcon
+  DocumentDuplicateIcon,
+  AtSymbolIcon,
+  BarsArrowUpIcon,
+  BarsArrowDownIcon
 } from '@heroicons/react/24/outline'
 
 const Profile = () => {
@@ -20,6 +23,10 @@ const Profile = () => {
   const [error, setError] = useState(null)
   const [editing, setEditing] = useState(false)
   const [formData, setFormData] = useState({})
+  const [isOpen, setIsOpen] = useState(false)
+
+
+
 
   useEffect(() => {
     fetchProfile()
@@ -145,58 +152,70 @@ const Profile = () => {
 
   console.log(user)
   return (
-    <div className="mt-[55px] ml-[60px] flex flex-row p-[50px] gap-8">
+    <div className="mt-[55px] ml-[60px] flex flex-col p-4">
+      <div className="flex flex-row gap-8 p-[40px]">
 	<div className="w-[150px] h-[150px] flex flex-col items-center 
 	  justify-center border border-slate-300 rounded-[50%]">
 	  <UserIcon className="w-20 h-20 text-blue-500"/>
 	</div>
-	<div className="w-[500px] h-[240px] flex flex-col gap-4">
-	  <div className="flex justify-between border-b border-b-slate-300">
-	    <p className="text-gray-500">Firstname</p>
+	<div className="w-[260px] flex flex-col gap-[20px] bg-white">
+	  <div className="flex flex-row items-center gap-[10px]">
 	    <p className="">{user.firstName}</p>
-	  </div>
-	  <div className="flex justify-between border-b border-b-slate-300">
-	    <p className="text-gray-500">Lastname</p>
 	    <p>{user.lastName}</p>
 	  </div>
-          <div className="flex justify-between border-b border-b-slate-300">
-	    <p className="text-gray-500">Email</p>
-	    <p>{user.email}</p>
-	  </div>
-	  <div className="flex justify-between border-b border-b-slate-300">
-	    <p className="text-gray-500">Username</p>
-	    <p>{user.username}</p>
-	  </div>
-	  <div className="flex justify-between">
-	    <p className="text-gray-500">Joined at</p>
-	    <p className="">{new Date(user.createdAt).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+          <div className="flex flex-col gap-[10px]">
+	    <div className="flex flex-row items-center gap-2">
+	      <EnvelopeIcon className="w-5 h-5"/>
+	      <p>{user.email}</p>
+	    </div>
+	    <div className="flex flex-row items-center gap-2">
+	      <AtSymbolIcon className="w-5 h-5"/>
+	      <p>{user.username}</p>
+	    </div>
+	    <div className="flex flex-row gap-2 items-center">
+	      <CalendarIcon className="w-5 h-5"/>
+	      <p className="">{new Date(user.createdAt).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</p>
+	    </div>
 	  </div>
 	</div>
-	<div className="flex flex-col items-start gap-2">
-	  <button className="flex flex-row items-center gap-[5px]  
-	    px-[12px] py-[5px] rounded-[5px] border border-slate-300 hover:shadow-sm cursor-pointer"
-	    onClick={handleLogout}>
-	    <p>Logout</p> 
-	    <ArrowRightOnRectangleIcon className="w-5 h-5"/>
-	  </button>
-	  <button className="flex flex-row items-center gap-[5px] 
-	    px-[12px] py-[5px] rounded-[5px] border border-slate-300 hover:shadow-sm cursor-pointer"
-	    onClick={() => setEditing(true)}>
-	    <p>Edit</p>
-	    <PencilIcon className="w-5 h-5"/>
-	  </button>
-	  <Link to="/signup" className="flex flex-row items-center gap-[5px] 
-	    px-[12px] py-[5px] rounded-[5px] border border-slate-300 hover:shadow-sm">
-	    <p>Create new account</p>
-	    <PlusIcon className="w-5 h-5"/>
-	  </Link>
-	  <Link to="/myposts" className="flex flex-row items-center gap-[5px] 
-	    px-[12px] py-[5px] rounded-[5px] border border-slate-300 hover:shadow-sm">
-	    <p>Posts</p>
-	    <DocumentDuplicateIcon className="w-5 h-5"/>
-	  </Link>
+	<div className="">
+	{ isOpen 
+	  ? <BarsArrowDownIcon className="w-8 h-8 border border-slate-400 p-[5px] rounded-[50%] hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
+	      onClick={() => setIsOpen(false)}/>
+	  : <BarsArrowUpIcon className="w-8 h-8 border border-slate-400 p-[5px] rounded-[50%] hover:shadow-xl transform hover:scale-105 transition-all duration-200 cursor-pointer"
+	      onClick={() => setIsOpen(true)}/>
+	}
 	</div>
-
+	{ isOpen && 
+	  <div className="flex flex-col items-start transform translate-x 
+	    border border-slate-300 rounded-[10px] overflow-hidden h-full">
+	    <button className="flex flex-row items-center justify-between gap-[5px] hover:bg-gray-300 
+	      px-[12px] py-[5px] cursor-pointer border-b border-slate-300 w-full"
+	      onClick={handleLogout}>
+	      <p>Logout</p> 
+	      <ArrowRightOnRectangleIcon className="w-5 h-5"/>
+	    </button>
+	    <button className="flex flex-row items-center justify-between gap-[5px] hover:bg-gray-300
+	      px-[12px] py-[5px] cursor-pointer border-b border-slate-300 w-full"
+	      onClick={() => setEditing(true)}>
+	      <p>Edit</p>
+	      <PencilIcon className="w-5 h-5"/>
+	    </button>
+	    <Link to="/signup" className="flex flex-row items-center justify-between gap-[5px] hover:bg-gray-300
+	      px-[12px] py-[5px] cursor-pointer border-b border-slate-300 w-full">
+	      <p>Create new account</p>
+	      <PlusIcon className="w-5 h-5"/>
+	    </Link>
+	    <Link to="/myposts" className="flex flex-row items-center justify-between gap-[5px] hover:bg-gray-300
+	      px-[12px] py-[5px] cursor-pointer w-full">
+	      <p>Posts</p>
+	      <DocumentDuplicateIcon className="w-5 h-5"/>
+	    </Link>
+	  </div> 
+	}
+        <div>
+          
+	</div>
 	{editing && 
 	  <div className="fixed inset-0 bg-opacity-50 backdrop-brightness-50 
 	    flex items-center justify-center z-50">
@@ -224,6 +243,15 @@ const Profile = () => {
 	    </div>
 	  </div>
 	}
+      </div>
+      <div className="ml-[60px] mr-[100px] px-8 py-2 
+	flex flex-row justify-between items-center border-b border-slate-400">
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Liked</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Saved</p>
+        <p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Shared</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Commented</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Read</p>
+      </div>
     </div>
   )
 }
