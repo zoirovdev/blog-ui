@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import { UserIcon, MagnifyingGlassIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { LightBulbIcon } from '@heroicons/react/24/solid'
+import { UserIcon, MagnifyingGlassIcon, PlusIcon, LightBulbIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom' 
 import { Tooltip } from 'react-tooltip'
