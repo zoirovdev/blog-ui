@@ -74,7 +74,7 @@ const Home = () => {
 		      <ArrowTopRightOnSquareIcon className="w-5 h-5"/>
 		    </Link>
 		  </div>
-                  <p className="text-gray-800 mb-2 line-clamp-3">
+                  <p className="text-gray-800 mb-2 line-clamp-4">
                     {post.content}
                   </p>
                   <div className="text-sm text-gray-600">
