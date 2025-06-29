@@ -137,60 +137,72 @@ const PostEdit = () => {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-slate-300 w-[800px]">
-          <input 
-            className="font-semibold w-full outline-none border-b-2 border-gray-200 focus:border-blue-500 pb-2 text-xl" 
-            type="text" 
-            name="title"
-            placeholder="Post title..."
-            value={post.title}
-            onChange={handleInputChange}
-          />
+	<div className="bg-white border border-slate-300">
+          <form onSubmit={handleSubmit} className="p-6">
+	    <div className="mb-6">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                  Title
+                </label>
+                <input
+                  id="title"
+                  name="title"
+                  type="text"
+                  value={post.title}
+                  onChange={handleInputChange}
+                  className={`w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
+                  placeholder="Enter your post title..."
+                />
+	   </div>
+           <div className="mb-6">
+             <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+               Content
+             </label>           
+             <textarea 
+               className="w-full outline-none border border-gray-200 p-3 focus:border-blue-500 resize-none" 
+               name="content"
+               cols="50" 
+               rows="15"
+               placeholder="Write your post content..."
+               value={post.content}
+               onChange={handleInputChange}
+             />
+	   </div>  
           
-          <textarea 
-            className="w-full outline-none border border-gray-200 p-3 focus:border-blue-500 resize-none" 
-            name="content"
-            cols="50" 
-            rows="15"
-            placeholder="Write your post content..."
-            value={post.content}
-            onChange={handleInputChange}
-          />
+            <div className="flex items-center gap-2">
+              <input className="cursor-pointer"
+                type="checkbox" 
+                id="published"
+                name="published"
+                checked={post.published}
+                onChange={(e) => setPost(prev => ({ ...prev, published: e.target.checked }))}
+              />
+              <label htmlFor="published">Published</label>
+            </div>
           
-          <div className="flex items-center gap-2">
-            <input className="cursor-pointer"
-              type="checkbox" 
-              id="published"
-              name="published"
-              checked={post.published}
-              onChange={(e) => setPost(prev => ({ ...prev, published: e.target.checked }))}
-            />
-            <label htmlFor="published">Published</label>
-          </div>
-          
-          <div className="flex gap-4 mt-4">
-            <button 
-              type="submit"
-              className="bg-blue-500 text-white px-6 py-2 hover:bg-blue-600 cursor-pointer"
-            >
-              Update
-            </button>
-            <button 
-              type="button"
-              onClick={handleDelete}
-              className="bg-red-500 text-white px-6 py-2 hover:bg-red-600 cursor-pointer"
-            >
-              Delete
-            </button>
-            <button 
-              type="button"
-              onClick={() => window.history.back()}
-              className="bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 cursor-pointer"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+            <div className="flex gap-4 mt-4">
+              <button 
+                type="submit"
+                className="bg-blue-500 text-white px-6 py-2 hover:bg-blue-600 cursor-pointer"
+              >
+                Update
+              </button>
+              <button 
+                type="button"
+                onClick={handleDelete}
+                className="bg-red-500 text-white px-6 py-2 hover:bg-red-600 cursor-pointer"
+              >
+                Delete
+              </button>
+              <button 
+                type="button"
+                onClick={() => window.history.back()}
+                className="bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+	</div>
       </div>
     </div>
   )
