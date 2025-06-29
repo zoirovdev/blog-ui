@@ -141,10 +141,10 @@ const New = () => {
         </div>
 
         {/* Form */}
-        <div className="bg-white shadow rounded-lg">
+        <div className="bg-white border border-slate-300">
             <form id="post-form" onSubmit={handleSubmit} className="p-6">
               {errors.general && (
-                <div className="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+                <div className="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3">
                   {errors.general}
                 </div>
               )}
@@ -160,7 +160,7 @@ const New = () => {
                   type="text"
                   value={formData.title}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-[10px] ${
+                  className={`w-full px-3 py-2 border ${
                     errors.title ? 'border-red-300' : 'border-gray-300'
                   } placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
                   placeholder="Enter your post title..."
@@ -186,7 +186,7 @@ const New = () => {
                   onChange={handleChange}
                   className={`w-full px-3 py-2 border ${
                     errors.content ? 'border-red-300' : 'border-gray-300'
-                  } rounded-[10px] placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
+                  } placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
                   placeholder="Write your post content here..."
                 />
                 {errors.content && (
@@ -200,13 +200,13 @@ const New = () => {
               {/* Published Toggle */}
               <div className="mb-6">
                 <div className="flex items-center">
-                  <input
+                  <input 
                     id="published"
                     name="published"
                     type="checkbox"
                     checked={formData.published}
                     onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 cursor-pointer text-blue-600 focus:ring-blue-500 border-gray-300"
                   />
                   <label htmlFor="published" className="ml-2 block text-sm text-gray-900">
                     Publish immediately
@@ -225,7 +225,7 @@ const New = () => {
                 <button
                   type="button"
                   onClick={() => navigate(-1)}
-                  className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  className="px-4 py-2 cursor-pointer border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 >
                   Cancel
                 </button>
@@ -234,7 +234,7 @@ const New = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white ${
+                    className={`px-4 py-2 cursor-pointer border border-transparent text-sm font-medium text-white ${
                       loading 
                         ? 'bg-gray-400 cursor-not-allowed' 
                         : 'bg-blue-600 hover:bg-blue-700'

@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
 const PostEdit = () => {
   const { id } = useParams()
@@ -123,13 +124,22 @@ const PostEdit = () => {
   if (error) return <div className="p-4 text-red-500">{error}</div>
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center">
-      <div className="w-[800px] flex flex-col gap-4 my-[50px] p-6 rounded-[10px] bg-white border border-slate-200">
-        <h1 className="text-2xl font-bold mb-4">Edit Post</h1>
-        
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 mt-[50px]">
+      <div className="max-w-4xl mx-auto">
+	<div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="flex items-center">
+                <PencilSquareIcon className="h-8 w-8 text-blue-600 mr-3" />
+                <h1 className="text-2xl font-bold text-gray-900">Update Post</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white border border-slate-300 w-[800px]">
           <input 
-            className="font-bold w-full outline-none border-b-2 border-gray-200 focus:border-blue-500 pb-2 text-xl" 
+            className="font-semibold w-full outline-none border-b-2 border-gray-200 focus:border-blue-500 pb-2 text-xl" 
             type="text" 
             name="title"
             placeholder="Post title..."
@@ -138,7 +148,7 @@ const PostEdit = () => {
           />
           
           <textarea 
-            className="w-full outline-none border border-gray-200 rounded p-3 focus:border-blue-500 resize-none" 
+            className="w-full outline-none border border-gray-200 p-3 focus:border-blue-500 resize-none" 
             name="content"
             cols="50" 
             rows="15"
@@ -148,7 +158,7 @@ const PostEdit = () => {
           />
           
           <div className="flex items-center gap-2">
-            <input 
+            <input className="cursor-pointer"
               type="checkbox" 
               id="published"
               name="published"
@@ -161,21 +171,21 @@ const PostEdit = () => {
           <div className="flex gap-4 mt-4">
             <button 
               type="submit"
-              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+              className="bg-blue-500 text-white px-6 py-2 hover:bg-blue-600 cursor-pointer"
             >
               Update
             </button>
             <button 
               type="button"
               onClick={handleDelete}
-              className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
+              className="bg-red-500 text-white px-6 py-2 hover:bg-red-600 cursor-pointer"
             >
               Delete
             </button>
             <button 
               type="button"
               onClick={() => window.history.back()}
-              className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+              className="bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 cursor-pointer"
             >
               Cancel
             </button>
