@@ -13,7 +13,8 @@ import {
   DocumentDuplicateIcon,
   AtSymbolIcon,
   BarsArrowUpIcon,
-  BarsArrowDownIcon
+  BarsArrowDownIcon,
+  ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline'
 
 const Profile = () => {
@@ -24,12 +25,13 @@ const Profile = () => {
   const [editing, setEditing] = useState(false)
   const [formData, setFormData] = useState({})
   const [isOpen, setIsOpen] = useState(false)
-
+  const [posts, setPosts] = useState([])
 
 
 
   useEffect(() => {
     fetchProfile()
+    getLiked()
   }, [])
 
   const fetchProfile = async () => {
@@ -124,6 +126,72 @@ const Profile = () => {
   }
 
 
+  const getLiked = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/user/${user.id}/liked-posts`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      
+      setPosts(data[0]) 
+    } catch (error) {
+      console.error('Failed to load', error)
+      setPosts([])
+    }
+  }
+
+  const handleLiked = () => {
+    getLiked()
+  }
+
+
+  const getSaved = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/user/${user.id}/saved-posts`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      setPosts(data)
+    } catch (error) {
+      console.error('Failed to load', error)
+    }
+  }
+
+
+  const handleSaved = () => {
+    getSaved()
+  }
+
+  
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -149,8 +217,7 @@ const Profile = () => {
     )
   }
 
-
-  console.log(user)
+   console.log(posts) 
   return (
     <div className="mt-[55px] ml-[60px] flex flex-col p-4">
       <div className="flex flex-row gap-8 p-[40px]">
@@ -244,13 +311,48 @@ const Profile = () => {
 	  </div>
 	}
       </div>
-      <div className="ml-[60px] mr-[100px] px-8 py-2 
+      <div className="mx-[60px] px-8 py-2 
 	flex flex-row justify-between items-center border-b border-slate-400">
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Liked</p>
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Saved</p>
-        <p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Shared</p>
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Commented</p>
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer">Read</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	  onClick={() => handleLiked()}>
+	  Liked
+	</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	  onClick={() => handleSaved()}>
+	  Saved
+	</p>
+        <p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	  onClick={() => handleShared()}>
+	  Shared
+	</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	  onClick={() => handleCommented()}>
+	  Commented
+	</p>
+	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	  onClick={() => handleRead()}>
+	  Read
+	</p>
+      </div>
+      <div className="mx-[60px] space-y-8 mt-[20px]">
+        {posts.length > 0 && 
+	  posts.map((post, index) => (
+            <article key={index} 
+	      className="space-y-4 mx-[60px] border border-slate-300 py-[20px] px-[30px] rounded-[5px]">
+	      <div className="flex flex-row justify-between items-center">
+                <p>{post.title}</p> 
+		<Link to={`/view/${post.id}`} className="">
+		  <ArrowTopRightOnSquareIcon className="w-9 h-9 p-2 cursor-pointer hover:bg-gray-200 rounded-[50%]"/>
+		</Link>
+	      </div>
+	      <p className="line-clamp-4">{post.content}</p>
+	      <div className="flex flex-row justify-between">
+		<p>@{post.author?.username}</p>
+		<p>{new Date(post.createdAt).toLocaleDateString()}</p>
+	      </div>
+	    </article>
+	  ))
+	}
       </div>
     </div>
   )
