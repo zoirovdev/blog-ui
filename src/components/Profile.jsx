@@ -191,6 +191,39 @@ const Profile = () => {
     getSaved()
   }
 
+
+  const getShared = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/user/${user.id}/shared-posts`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setPosts(data)
+    }  catch (error) {
+      console.error('Failed to load')
+      setPosts([])
+    }
+  }
+
+
+  const handleShared = () => {
+    getShared()
+  }
+
   
   if (loading) {
     return (
