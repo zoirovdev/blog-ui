@@ -224,6 +224,38 @@ const Profile = () => {
     getShared()
   }
 
+
+  const getCommented = async () => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if(!userStr){
+	console.error('User not found')
+	return
+      }
+
+      const user = JSON.parse(userStr)
+      if(!user.id){
+	console.error('User id not found')
+	return
+      }
+
+      const response = await fetch(`http://localhost:8000/api/user/${user.id}/commented-posts`)
+      if(!response.ok){
+	throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      setPosts(data)
+    } catch (error) {
+      console.error('Failed to load', error)
+    }
+  }
+
+
+  const handleCommented = () => {
+    getCommented()
+  }
+
   
   if (loading) {
     return (
@@ -373,7 +405,7 @@ const Profile = () => {
             <article key={index} 
 	      className="space-y-4 mx-[60px] border border-slate-300 py-[20px] px-[30px] rounded-[5px]">
 	      <div className="flex flex-row justify-between items-center">
-                <p>{post.title}</p> 
+                <p className="font-semibold">{post.title}</p> 
 		<Link to={`/view/${post.id}`} className="">
 		  <ArrowTopRightOnSquareIcon className="w-9 h-9 p-2 cursor-pointer hover:bg-gray-200 rounded-[50%]"/>
 		</Link>
