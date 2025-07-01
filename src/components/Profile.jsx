@@ -292,7 +292,7 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600">Loading...</div>
+        <div className="animate-spin h-12 w-12 border-b-2 border-blue-600">Loading...</div>
       </div>
     )
   }
@@ -305,7 +305,7 @@ const Profile = () => {
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={() => navigate('/login')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 hover:bg-blue-700"
           >
             Login
           </button>
@@ -322,7 +322,7 @@ const Profile = () => {
 	  justify-center border border-slate-300 rounded-[50%]">
 	  <UserIcon className="w-20 h-20 text-blue-500"/>
 	</div>
-	<div className="w-[260px] flex flex-col gap-[20px] bg-white">
+	<div className="w-[300px] flex flex-col gap-[20px] bg-white">
 	  <div className="flex flex-row items-center gap-[10px]">
 	    <p className="">{user.firstName}</p>
 	    <p>{user.lastName}</p>
@@ -352,7 +352,7 @@ const Profile = () => {
 	</div>
 	{ isOpen && 
 	  <div className="flex flex-col items-start transform translate-x 
-	    border border-slate-300 rounded-[10px] overflow-hidden h-full">
+	    border border-slate-300 overflow-hidden h-full">
 	    <button className="flex flex-row items-center justify-between gap-[5px] hover:bg-gray-300 
 	      px-[12px] py-[5px] cursor-pointer border-b border-slate-300 w-full"
 	      onClick={handleLogout}>
@@ -383,7 +383,7 @@ const Profile = () => {
 	{editing && 
 	  <div className="fixed inset-0 bg-opacity-50 backdrop-brightness-50 
 	    flex items-center justify-center z-50">
-	    <div className="bg-white w-[600px] h-[250px] rounded-[5px] p-4">
+	    <div className="bg-white w-[600px] h-[250px] p-4">
 	      <div className="flex flex-row justify-between"> 
 	        <p>Edit</p>
                 <XMarkIcon className="w-6 h-6 cursor-pointer 
@@ -393,15 +393,15 @@ const Profile = () => {
 	      <div className="flex flex-col my-6 gap-4">
 		<input 
 	          type="text" 
-		  className="outline-none border border-slate-300 rounded-[5px] p-2" 
+		  className="outline-none border border-slate-300 p-2" 
 		  placeholder="Firstname"
 		  onChange={(e) => setFormData({...formData, firstName: e.target.value})}/>
 		<input 
 		  type="text" 
-		  className="outline-none border border-slate-300 rounded-[5px] p-2" 
+		  className="outline-none border border-slate-300 p-2" 
 		  placeholder="Lastname"
 		  onChange={(e) => setFormData({...formData, lastName: e.target.value})}/>
-		<button type="submit" className="bg-blue-400 text-white p-2 rounded-[5px]"
+		<button type="submit" className="bg-blue-400 text-white p-2"
 		  onClick={() => { handleForm(); }}>Save</button>
 	      </div>
 	    </div>
@@ -410,23 +410,23 @@ const Profile = () => {
       </div>
       <div className="mx-[60px] px-8 py-2 
 	flex flex-row justify-between items-center border-b border-slate-400">
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	<p className="hover:bg-gray-300 py-2 px-4 cursor-pointer"
 	  onClick={() => handleLiked()}>
 	  Liked
 	</p>
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	<p className="hover:bg-gray-300 py-2 px-4 cursor-pointer"
 	  onClick={() => handleSaved()}>
 	  Saved
 	</p>
-        <p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+        <p className="hover:bg-gray-300 py-2 px-4 cursor-pointer"
 	  onClick={() => handleShared()}>
 	  Shared
 	</p>
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	<p className="hover:bg-gray-300 py-2 px-4 cursor-pointer"
 	  onClick={() => handleCommented()}>
 	  Commented
 	</p>
-	<p className="hover:bg-gray-300 rounded-[2px] py-2 px-4 cursor-pointer"
+	<p className="hover:bg-gray-300 py-2 px-4 cursor-pointer"
 	  onClick={() => handleRead()}>
 	  Read
 	</p>
@@ -435,7 +435,7 @@ const Profile = () => {
         {posts.length > 0 && 
 	  posts.map((post, index) => (
             <article key={index} 
-	      className="space-y-4 mx-[60px] border border-slate-300 py-[20px] px-[30px] rounded-[5px]">
+	      className="space-y-4 mx-[60px] border border-slate-300 py-[20px] px-[30px]">
 	      <div className="flex flex-row justify-between items-center">
                 <p className="font-semibold">{post.title}</p> 
 		<Link to={`/view/${post.id}`} className="">

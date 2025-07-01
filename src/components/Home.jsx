@@ -79,7 +79,7 @@ const Home = () => {
                   </p>
                   <div className="text-sm text-gray-600">
                     <div className="flex flex-row justify-between items-center">
-		      <p>@{post.author?.username}</p> 
+		      <Link to={`/account/${post.author.username}`}>@{post.author?.username}</Link> 
                       <p>{new Date(post.createdAt).toLocaleDateString()}</p>
 		    </div>
                   </div>
