@@ -12,7 +12,7 @@ import MyPosts from './components/MyPosts.jsx'
 import SearchResult from './components/SearchResult.jsx'
 import View from './components/View.jsx'
 import Sidebar from './components/Sidebar.jsx'
-
+import Account from './components/Account.jsx'
 
 
 
@@ -32,6 +32,7 @@ function App() {
 	<Route path='/myposts' element={<MyPosts/>}/>
 	<Route path='/search' element={<SearchResult/>}/>
 	<Route path='/view/:id' element={<View/>}/>
+	<Route path='/account/:username' element={<Account/>}/>
       </Routes>
     </div>
   )
