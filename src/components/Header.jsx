@@ -9,10 +9,13 @@ const Header = () => {
   const [searchVal, setSearchVal] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
+
 
   const handleEnter = (e) => {
-    if(event.key === 'Enter'){
-      if(event.target.value === ''){
+    if(e.key === 'Enter'){
+      if(e.target.value === ''){
 	return
       }
       searchQuery()
@@ -21,7 +24,7 @@ const Header = () => {
 
   const searchQuery = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/posts/search?q=${searchVal}`)
+      const response = await fetch(`${API_BASE_URL}/api/posts/search?q=${searchVal}`)
       const data = await response.json()
 
       navigate('/search', {

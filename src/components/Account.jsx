@@ -12,6 +12,7 @@ ArrowTopRightOnSquareIcon
 
 
 const Account = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
   const { username } = useParams()
   const [user, setUser] = useState({})
   const navigate = useNavigate()
@@ -19,7 +20,7 @@ const Account = () => {
   
   const getUser = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/users/${username}`)
+      const response = await fetch(`${API_BASE_URL}/api/users/${username}`)
       if(!response.ok){
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -34,7 +35,7 @@ const Account = () => {
 
   const getPosts = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/accounts/${username}/posts`)
+      const response = await fetch(`${API_BASE_URL}/api/accounts/${username}/posts`)
       if(!response.ok){
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -46,17 +47,23 @@ const Account = () => {
     }
   }
 
+
   useEffect(() => {
     getUser()
     getPosts()
   }, [username])
 
-  
+
+  const handlePosts = () => {
+    getPosts()
+  }
+
+
   console.log(posts)
   return (
     <div className="mt-[47px] ml-[60px] flex flex-col p-4">
       <button className="flex flex-row justify-start items-center w-[90px] gap-2 cursor-pointer 
-	bg-gray-200 p-2 hover:bg-gray-400 transition-colors`"
+	bg-gray-200 p-2 hover:bg-gray-400 transition-colors"
 	onClick={() => navigate(-1)}>
 	<ArrowLeftIcon className="w-5 h-5"/>
 	<p>Back</p>

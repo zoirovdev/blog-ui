@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { 
 UserIcon, 
 HeartIcon as HeartIconOutline, 
@@ -35,15 +35,21 @@ const View = () => {
   })
   const [commentModal, setCommentModal] = useState(false)
   const [commentCount, setCommentCount] = useState(0)
-  const [readNum, setReadNum] = useState(0)	
+  const [readNum, setReadNum] = useState(0)
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  const navigate = useNavigate()
 
   const getPost = async () => {
     try {
       setLoading(true)
 
       const token = localStorage.getItem('token')
+      if(!token){
+	navigate('/login')
+	return
+      }
 
-      const response = await fetch(`http://localhost:8000/api/posts/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}`, {
         headers: {
 	  'Authorization': `Bearer ${token}`,
 	  'Content-Type': 'application/json'
@@ -53,6 +59,12 @@ const View = () => {
       const data = await response.json()
 	
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	if(response.status === 404){
 	  setError('Post not found')
 	} else {
@@ -84,8 +96,27 @@ const View = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/${id}/like-status?userId=${user.id}`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}/like-status?userId=${user.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+
       if (!response.ok) {
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -110,10 +141,18 @@ const View = () => {
         return
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/like`, {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/like`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+	  'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           postId: id,
@@ -122,6 +161,13 @@ const View = () => {
       })
 
       if (!response.ok) {
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -153,9 +199,27 @@ const View = () => {
 	console.log('User ID not found')
 	return
       }
+
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
       
-      const response = await fetch(`http://localhost:8000/api/posts/${id}/save-status?userId=${user.id}`);
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}/save-status?userId=${user.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -168,10 +232,10 @@ const View = () => {
 
   const postSave = async () => {
     try {
-      const token = localStorage.getItem('token');
-      if(!token){
-	console.log('Token not found')
-	return
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
       }
 
       const userStr = localStorage.getItem('user');
@@ -186,7 +250,7 @@ const View = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/save`, {
+      const response = await fetch(`${API_BASE_URL}/api/posts/save`, {
         method: 'POST',
 	headers: {
           "Content-Type": "application/json",
@@ -199,6 +263,12 @@ const View = () => {
       })
 
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -226,10 +296,28 @@ const View = () => {
       if(!user.id){
 	console.error('User id is not found')
         return
-      } 
+      }
 
-      const response = await fetch(`http://localhost:8000/api/posts/${id}/share-status?userId=${user.id}`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}/share-status?userId=${user.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -254,9 +342,16 @@ const View = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/share`, {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/share`, {
         method: 'POST',
 	headers: {
+	  'Authorization': `Bearer ${token}`,
       	  "Content-Type": 'application/json'
 	},
 	body: JSON.stringify({
@@ -266,6 +361,12 @@ const View = () => {
       })
 
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -305,8 +406,26 @@ const View = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/${id}/comments?userId=${user.id}`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}/comments?userId=${user.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -333,12 +452,19 @@ const View = () => {
 	return
       }
 
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
       comment.postId = parseInt(id)
       comment.userId = user.id
 	
-      const response = await fetch(`http://localhost:8000/api/posts/comment`, {
+      const response = await fetch(`${API_BASE_URL}/api/posts/comment`, {
         method: 'POST',
 	headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
 	},
 	body: JSON.stringify({
@@ -349,6 +475,12 @@ const View = () => {
       })
 
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -372,8 +504,26 @@ const View = () => {
 
   const getReadNum = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/posts/${id}/read`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}/read`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -399,9 +549,16 @@ const View = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/read`, {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login') // Also need to import useNavigate
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/read`, {
         method: 'POST',
 	headers: {
+	  'Authorization': `Bearer ${token}`,
 	  "Content-Type": 'application/json'
 	},
 	body: JSON.stringify({
@@ -411,6 +568,12 @@ const View = () => {
       })
 
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 

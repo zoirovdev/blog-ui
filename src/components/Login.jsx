@@ -11,6 +11,7 @@ const Login = () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -60,7 +61,7 @@ const Login = () => {
     setErrors({})
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -229,26 +230,6 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Demo credentials (optional - remove in production) */}
-          <div className="mt-6 p-4 bg-gray-50 rounded-md">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Demo Credentials (for testing)</h3>
-            <p className="text-xs text-gray-600">
-              Email: demo@example.com<br />
-              Password: demo123
-            </p>
-            <button
-              type="button"
-              onClick={() => {
-                setFormData({
-                  email: 'demo@example.com',
-                  password: 'demo123'
-                })
-              }}
-              className="mt-2 text-xs text-blue-600 hover:text-blue-500"
-            >
-              Fill demo credentials
-            </button>
-          </div>
         </form>
       </div>
     </div>

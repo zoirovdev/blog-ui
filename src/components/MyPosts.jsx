@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowTopRightOnSquareIcon, PencilSquareIcon } from "@heroicons/react/24/outline"
 
 
@@ -10,6 +10,8 @@ const MyPosts = () => {
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [postsPerPage] = useState(5) 
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  const navigate = useNavigate()
 
   // Single useEffect that handles page changes
   useEffect(() => {
@@ -21,18 +23,34 @@ const MyPosts = () => {
       setLoading(true)
 
       const userData = JSON.parse(localStorage.getItem('user'))
+      const token = localStorage.getItem('token')
       const userId = userData?.id
 
-      if (!userId) {
-        console.error('No user ID found')
+      if (!userId || !token) {
+        navigate('/login')
         return
       }
 
       const response = await fetch(
-        `http://localhost:8000/api/user/posts?page=${page}&limit=${limit}&authorId=${userId}`
+        `${API_BASE_URL}/api/user/posts?page=${page}&limit=${limit}&authorId=${userId}`,
+	{
+          headers: 
+	  {
+            'Authorization': `Bearer ${token}`,  // Add auth header
+            'Content-Type': 'application/json'
+          }
+	}
       )
 
       if (!response.ok) {
+	if (response.status === 401) {
+          // Token expired or invalid
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 

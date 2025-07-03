@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
 const PostEdit = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const [post, setPost] = useState({
     title: '',
     content: '',
@@ -12,14 +13,20 @@ const PostEdit = () => {
   })
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const getPost = async () => {
     try { 
       setLoading(true)
       // Get token from localStorage (adjust based on where you store it)
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken')
+      const token = localStorage.getItem('token') 
+
+      if(!token){
+	navigate('/login')
+	return
+      }
       
-      const response = await fetch(`http://localhost:8000/api/posts/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -28,6 +35,12 @@ const PostEdit = () => {
       const data = await response.json()
       
       if(!response.ok) {
+	if(response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
         if(response.status === 404){
           setError('Post not found')
         } else {
@@ -35,6 +48,7 @@ const PostEdit = () => {
         }
         return
       }
+
       setPost(data)
     } catch (error) {
       console.log(error)
@@ -54,9 +68,15 @@ const PostEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if(!post.title.trim() || !post.content.trim()){
+      alert('Title and content are required')
+      return
+    }
+
     try {
       // Get token from localStorage (adjust based on where you store it)
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken')
+      const token = localStorage.getItem('token')
       
       // Remove id from the data being sent (it's already in the URL)
       const postData = {
@@ -65,7 +85,7 @@ const PostEdit = () => {
         published: post.published,
       }
 
-      const response = await fetch(`http://localhost:8000/api/posts/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -74,11 +94,19 @@ const PostEdit = () => {
         body: JSON.stringify(postData)
       })
       
-      if (response.ok) {
-        alert('Post updated successfully!')
-      } else {
-        alert('Failed to update post')
-      }
+      if(!response.ok) {
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
+	alert('Failed to update post')
+	return
+      } 
+
+      alert('Post updated successfully!')
     } catch (error) {
       console.log(error)
       alert('Error updating post')
@@ -92,9 +120,9 @@ const PostEdit = () => {
     if (!confirmDelete) return
     
     try {
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken')
+      const token = localStorage.getItem('token') 
       
-      const response = await fetch(`http://localhost:8000/api/posts/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/posts/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -102,14 +130,22 @@ const PostEdit = () => {
         }
       })
       
-      if (response.ok) {
-        alert('Post deleted successfully!')
-        // Redirect to home page or posts list
-        window.location.href = '/'
-      } else {
+      if (!response.ok) {
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
         const data = await response.json()
         alert(`Failed to delete post: ${data.error || 'Unknown error'}`)
+	return
       }
+
+      alert('Post deleted successfully!')
+      // Redirect to home page or posts list
+      navigate('/')
     } catch (error) {
       console.log(error)
       alert('Error deleting post')
@@ -195,7 +231,7 @@ const PostEdit = () => {
               </button>
               <button 
                 type="button"
-                onClick={() => window.history.back()}
+                onClick={() => navigate(-1)}
                 className="bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 cursor-pointer"
               >
                 Cancel

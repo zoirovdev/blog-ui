@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { 
   UserIcon, 
-  EnvelopeIcon, 
-  IdentificationIcon, 
+  EnvelopeIcon,  
   CalendarIcon,
   ArrowRightOnRectangleIcon,
   PencilIcon,
-  CheckIcon,
   XMarkIcon,
   PlusIcon,
   DocumentDuplicateIcon,
@@ -26,7 +24,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({})
   const [isOpen, setIsOpen] = useState(false)
   const [posts, setPosts] = useState([])
-
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 
   useEffect(() => {
@@ -43,7 +41,7 @@ const Profile = () => {
         return
       }
 
-      const response = await fetch('http://localhost:8000/api/auth/profile', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -96,10 +94,18 @@ const Profile = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/users/${user.id}`, {
+      const token = localStorage.getItem('token') // Add this
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/api/users/${user.id}`, {
         method: 'PUT',
 	headers: {
-	  "Content-Type": 'application/json'
+	  "Content-Type": 'application/json',
+          'Authorization': `Bearer ${token}`
 	},
  	body: JSON.stringify({
 	  firstName: formData.firstName,
@@ -107,7 +113,13 @@ const Profile = () => {
 	})
       })
 
-      if(!response.ok){ 
+      if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }			
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -140,8 +152,28 @@ const Profile = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/user/${user.id}/liked-posts`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/liked-posts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -173,8 +205,28 @@ const Profile = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/user/${user.id}/saved-posts`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/saved-posts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -206,8 +258,29 @@ const Profile = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/user/${user.id}/shared-posts`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/shared-posts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
+
       if(!response.ok){
+        if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -239,8 +312,28 @@ const Profile = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/user/${user.id}/commented-posts`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/commented-posts`, {
+         headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -271,8 +364,28 @@ const Profile = () => {
 	return
       }
 
-      const response = await fetch(`http://localhost:8000/api/user/${user.id}/read-posts`)
+      const token = localStorage.getItem('token')
+      if (!token) {
+        navigate('/login')
+        return
+      }
+
+
+      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/read-posts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+
       if(!response.ok){
+	if (response.status === 401) {
+          localStorage.removeItem('token')
+          localStorage.removeItem('user')
+          navigate('/login')
+          return
+        }
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -314,7 +427,6 @@ const Profile = () => {
     )
   }
 
-   console.log(posts) 
   return (
     <div className="mt-[55px] ml-[60px] flex flex-col p-4">
       <div className="flex flex-row gap-8 p-[40px]">
@@ -377,9 +489,7 @@ const Profile = () => {
 	    </Link>
 	  </div> 
 	}
-        <div>
-          
-	</div>
+        
 	{editing && 
 	  <div className="fixed inset-0 bg-opacity-50 backdrop-brightness-50 
 	    flex items-center justify-center z-50">
@@ -395,11 +505,13 @@ const Profile = () => {
 	          type="text" 
 		  className="outline-none border border-slate-300 p-2" 
 		  placeholder="Firstname"
+		  value={formData.firstName}
 		  onChange={(e) => setFormData({...formData, firstName: e.target.value})}/>
 		<input 
 		  type="text" 
 		  className="outline-none border border-slate-300 p-2" 
 		  placeholder="Lastname"
+		  value={formData.lastName}
 		  onChange={(e) => setFormData({...formData, lastName: e.target.value})}/>
 		<button type="submit" className="bg-blue-400 text-white p-2"
 		  onClick={() => { handleForm(); }}>Save</button>

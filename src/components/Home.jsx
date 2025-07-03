@@ -10,12 +10,13 @@ const Home = () => {
   const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [postsPerPage] = useState(5) // You can make this adjustable
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
   
   const fetchPosts = async (page = 1, limit = postsPerPage) => {
     try {
       setLoading(true)
       const response = await fetch(
-        `http://localhost:8000/api/posts?page=${page}&limit=${limit}&published=true`
+        `${API_BASE_URL}/api/posts?page=${page}&limit=${limit}&published=true`
       )
       const data = await response.json()
       

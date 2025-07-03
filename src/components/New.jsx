@@ -15,6 +15,7 @@ const New = () => {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [preview, setPreview] = useState(false)
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -75,7 +76,7 @@ const New = () => {
         return
       }
 
-      const response = await fetch('http://localhost:8000/api/posts', {
+      const response = await fetch(`${API_BASE_URL}/api/posts`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

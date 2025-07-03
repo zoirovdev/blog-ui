@@ -16,6 +16,7 @@ const Signup = () => {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -89,7 +90,7 @@ const Signup = () => {
     setErrors({})
 
     try {
-      const response = await fetch('http://localhost:8000/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
