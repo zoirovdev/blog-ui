@@ -40,9 +40,9 @@ const Header = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 w-full z-50 bg-white flex flex-row border-b-1 border-slate-300 p-2 gap-2 items-center">
-      <img src="/anchor.svg" alt="anchor" className="h-5 w-5 object-cover"/>
+      <img src="/anchor.svg" alt="anchor" className="h-5 w-5 object-cover ml-[10px]"/>
       <h2 className="font-sans text-xl antialiased font-bold font-stretch-extra-condensed tracking-tight">Dengiz</h2>
-      <div className="flex flex-row ml-[228px] border border-slate-300 h-10 items-center hover:shadow-sm 
+      <div className="flex flex-row ml-[220px] border border-slate-300 h-10 items-center hover:shadow-sm 
 	focus-within:shadow-sm">
 	<MagnifyingGlassIcon className="w-6 h-6 ml-4"/>
         <input className="py-2 px-4 outline-none w-[500px]" placeholder="Search"
