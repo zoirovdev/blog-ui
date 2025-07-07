@@ -20,8 +20,28 @@ const Account = () => {
   
   const getUser = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/users/${username}`)
+      const token = localStorage.getItem('token')
+      if(!token){
+	navigate('/login')
+	return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/users/${username}`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+	  "Authorization": `Bearer ${token}`
+        }
+      })
+
       if(!response.ok){
+        if(response.status === 401){
+	  localStorage.removeItem('token')
+	  localStorage.removeItem('user')
+	  navigate('/login')
+	  return
+	}
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -35,8 +55,28 @@ const Account = () => {
 
   const getPosts = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/accounts/${username}/posts`)
+      const token = localStorage.getItem('token')
+      if(!token){
+	navigate('/login')
+	return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/accounts/${username}/posts`, {
+        method: 'GET',
+	headers: {
+          "Content-Type": "application/json",
+	  "Authorization": `Bearer ${token}`
+	}
+      })
+
       if(!response.ok){
+	if(response.status === 401){
+	  localStorage.removeItem('token')
+	  localStorage.removeItem('user')
+	  navigate('/login')
+	  return
+	}
+
 	throw new Error(`HTTP error! status: ${response.status}`)
       }
 
@@ -59,7 +99,7 @@ const Account = () => {
   }
 
 
-  console.log(posts)
+  
   return (
     <div className="mt-[47px] ml-[60px] flex flex-col p-4">
       <button className="flex flex-row justify-start items-center w-[90px] gap-2 cursor-pointer 

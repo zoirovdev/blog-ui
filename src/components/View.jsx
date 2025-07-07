@@ -98,7 +98,7 @@ const View = () => {
 
       const token = localStorage.getItem('token')
       if (!token) {
-        navigate('/login') // Also need to import useNavigate
+        navigate('/login') 
         return
       }
 
@@ -143,7 +143,7 @@ const View = () => {
 
       const token = localStorage.getItem('token')
       if (!token) {
-        navigate('/login') // Also need to import useNavigate
+        navigate('/login') 
         return
       }
 

@@ -59,10 +59,10 @@ const Home = () => {
         
         {/* Posts List */}
         <div className="space-y-6 mb-8">
-          {posts.length === 0 ? (
+          {posts?.length === 0 ? (
             <p className="text-gray-500 text-center py-8">No posts found.</p>
           ) : (
-            posts.map(post => (
+            posts?.map(post => (
               <article key={post.id} className="border-b border-slate-400 pb-4">
                 <div className="block hover:bg-gray-50 p-2 -m-2 rounded transition-colors space-y-4">
 		  <div className="flex flex-row justify-between items-center">
@@ -91,7 +91,7 @@ const Home = () => {
         </div>
 
         {/* Pagination Controls */}
-        {pagination.totalPages > 1 && (
+        {pagination?.totalPages > 1 && (
           <div className="flex items-center justify-between">
             {/* Previous Button */}
             <button
@@ -108,12 +108,12 @@ const Home = () => {
 
             {/* Page Numbers */}
             <div className="flex space-x-2">
-              {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(page => (
+              {Array.from({ length: pagination?.totalPages }, (_, i) => i + 1).map(page => (
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
                   className={`px-3 py-1 rounded ${
-                    page === pagination.currentPage
+                    page === pagination?.currentPage
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                   }`}
@@ -126,7 +126,7 @@ const Home = () => {
             {/* Next Button */}
             <button
               onClick={handleNextPage}
-              disabled={!pagination.hasNextPage}
+              disabled={!pagination?.hasNextPage}
               className={`px-4 py-2 rounded ${
                 pagination.hasNextPage 
                   ? 'bg-blue-500 text-white hover:bg-blue-600' 
@@ -139,10 +139,10 @@ const Home = () => {
         )}
 
         {/* Pagination Info */}
-        {pagination.totalPosts && (
+        {pagination?.totalPosts && (
           <div className="text-center text-sm text-gray-500 mt-4">
-            Showing {posts.length} of {pagination.totalPosts} posts 
-            (Page {pagination.currentPage || currentPage} of {pagination.totalPages})
+            Showing {posts?.length} of {pagination?.totalPosts} posts 
+            (Page {pagination?.currentPage || currentPage} of {pagination?.totalPages})
           </div>
         )}
       </div>

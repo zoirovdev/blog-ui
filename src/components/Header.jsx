@@ -24,7 +24,30 @@ const Header = () => {
 
   const searchQuery = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/posts/search?q=${searchVal}`)
+      const token = localStorage.getItem('token')
+      if(!token){
+	navigate('/login')
+	return
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/posts/search?q=${searchVal}`, {
+        method: 'GET',
+	headers: {
+          "Content-Type": "application/json",
+	  "Authorization": `Bearer ${token}`
+	}
+      })
+      
+      if(!response.ok){
+        if(response.status === 401){
+	  localStorage.removeItem('token')
+	  localStorage.removeItem('user')
+	  navigate('/login')
+	  return
+	}
+
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
       const data = await response.json()
 
       navigate('/search', {
