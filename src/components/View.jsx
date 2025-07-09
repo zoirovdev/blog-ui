@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { 
-UserIcon, 
+UserIcon,
+ArrowLeftIcon,
 HeartIcon as HeartIconOutline, 
 BookmarkIcon as BookmarkIconOutline,
 PaperAirplaneIcon as AirplaneOutline, 
@@ -601,6 +602,12 @@ const View = () => {
   
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col pl-[200px] pt-[100px] pb-[50px] gap-4">
+      <button className="flex flex-row justify-start items-center w-[90px] gap-2 cursor-pointer 
+	bg-gray-200 p-2 hover:bg-gray-400 transition-colors"
+	onClick={() => navigate(-1)}>
+	<ArrowLeftIcon className="w-5 h-5"/>
+	<p>Back</p>
+      </button>
       <div className="bg-white w-[880px] min-h-screen py-8 px-10">
 	<p className="mb-4 p-4 text-xl font-bold text-left">{post.title}</p>
 	<div className="flex flex-row items-center mb-2 text-gray-600">

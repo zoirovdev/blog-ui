@@ -556,7 +556,7 @@ const Profile = () => {
 	      </div>
 	      <p className="line-clamp-4">{post.content}</p>
 	      <div className="flex flex-row justify-between">
-		<p>@{post.author?.username}</p>
+		<Link to={`/account/${post.author.username}`}>@{post.author?.username}</Link>
 		<p>{new Date(post.createdAt).toLocaleDateString()}</p>
 	      </div>
 	    </article>

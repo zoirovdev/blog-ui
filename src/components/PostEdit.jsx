@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import { PencilSquareIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 
 const PostEdit = () => {
   const { id } = useParams()
@@ -160,7 +160,13 @@ const PostEdit = () => {
   if (error) return <div className="p-4 text-red-500">{error}</div>
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 mt-[50px]">
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 mt-[30px]">
+      <button className="flex flex-row justify-start items-center ml-[50px] w-[90px] gap-2 cursor-pointer 
+	bg-gray-200 p-2 hover:bg-gray-400 transition-colors"
+	onClick={() => navigate(-1)}>
+	<ArrowLeftIcon className="w-5 h-5"/>
+	<p>Back</p>
+      </button>
       <div className="max-w-4xl mx-auto">
 	<div className="mb-8">
           <div className="flex items-center justify-between">
