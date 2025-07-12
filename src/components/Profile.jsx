@@ -24,6 +24,7 @@ const Profile = () => {
   const [formData, setFormData] = useState({})
   const [isOpen, setIsOpen] = useState(false)
   const [posts, setPosts] = useState([])
+  const [activeTab, setActiveTab] = useState('liked')
   const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 
@@ -428,7 +429,7 @@ const Profile = () => {
   }
 
 return (
-  <div className="mt-8 sm:mt-12 lg:mt-[55px] mx-4 sm:mx-8 lg:ml-[60px] flex flex-col p-4">
+  <div className="mt-8 sm:mt-12 lg:mt-[55px] mx-4 sm:mx-8 lg:ml-[60px] flex flex-col p-4 pb-10 sm:pb-8 lg:pb-4">
     <div className="flex flex-col lg:flex-row gap-4 lg:gap-8 p-4 lg:p-[40px]">
       {/* Profile Picture */}
       <div className="w-24 h-24 sm:w-32 sm:h-32 lg:w-[150px] lg:h-[150px] flex flex-col items-center 
@@ -470,7 +471,7 @@ return (
 
       {/* Dropdown Menu */}
       { isOpen && 
-        <div className="absolute top-full right-4 sm:right-8 lg:static lg:top-auto lg:right-auto 
+        <div className="absolute top-full right-4 sm:right-2 static top-auto right-auto 
           flex flex-col items-start transform translate-x 
           border border-slate-300 overflow-hidden h-auto lg:h-full
           bg-white shadow-lg lg:shadow-none rounded lg:rounded-none
@@ -536,31 +537,32 @@ return (
     <div className="mx-0 sm:mx-4 lg:mx-[60px] px-2 sm:px-4 lg:px-8 py-2 
       flex flex-row justify-between items-center border-b border-slate-400
       overflow-x-auto">
-      <p className="hover:bg-gray-300 py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base"
-        onClick={() => handleLiked()}>
+      <p className={`${activeTab === 'liked' ? 'bg-gray-300' : 'hover:bg-gray-300'} py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base`}
+        onClick={() => {handleLiked();setActiveTab('liked')}}>
         Liked
       </p>
-      <p className="hover:bg-gray-300 py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base"
-        onClick={() => handleSaved()}>
+      <p className={`${activeTab === 'saved' ? 'bg-gray-300' : 'hover:bg-gray-300'} py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base`}
+        onClick={() => {handleSaved();setActiveTab('saved')}}>
         Saved
       </p>
-      <p className="hover:bg-gray-300 py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base"
-        onClick={() => handleShared()}>
+      <p className={`${activeTab === 'shared' ? 'bg-gray-300' : 'hover:bg-gray-300'} py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base`}
+        onClick={() => {handleShared();setActiveTab('shared');}}>
         Shared
       </p>
-      <p className="hover:bg-gray-300 py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base"
-        onClick={() => handleCommented()}>
+      <p className={`${activeTab === 'commented' ? 'bg-gray-300' : 'hover:bg-gray-300'} py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base`}
+        onClick={() => {setActiveTab('commented');handleCommented()}}>
         Commented
       </p>
-      <p className="hover:bg-gray-300 py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base"
-        onClick={() => handleRead()}>
+      <p className={`${activeTab === 'read' ? 'bg-gray-300' : 'hover:bg-gray-300'} py-2 px-2 sm:px-4 cursor-pointer whitespace-nowrap text-sm sm:text-base`}
+        onClick={() => {setActiveTab('read');handleRead();}}>
         Read
       </p>
     </div>
 
     {/* Posts Section */}
-    <div className="mx-0 sm:mx-4 lg:mx-[60px] space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-[20px]">
-      {posts.length > 0 && 
+    <div className="mx-0 sm:mx-4 lg:mx-[60px] space-y-4 sm:space-y-6 lg:space-y-8 mt-4 sm:mt-6 lg:mt-[20px]
+      mb-10 sm:mb-8 lg:mb-4">
+      {posts.length > 0 ? 
         posts.map((post, index) => (
           <article key={index} 
             className="space-y-4 mx-0 sm:mx-4 lg:mx-[60px] border border-slate-300 py-4 sm:py-6 lg:py-[20px] px-4 sm:px-6 lg:px-[30px] rounded-lg">
@@ -579,7 +581,20 @@ return (
             </div>
           </article>
         ))
-      }
+	:<article className="flex flex-col justify-center items-center h-32 
+	sm:h-48 md:h-[200px] lg:h-[250px] w-full bg-gray-100 rounded-lg border border-gray-200">
+           <div className="text-center space-y-2 sm:space-y-3">
+             <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 
+               bg-gray-300 rounded-full flex items-center justify-center">
+               <svg className="w-6 h-6 sm:w-8 sm:h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+               </svg>
+             </div>
+             <p className="text-sm sm:text-base lg:text-lg font-medium text-gray-600">
+               No articles found!
+             </p>
+           </div>
+         </article> }
     </div>
   </div>
 )
