@@ -159,95 +159,97 @@ const PostEdit = () => {
   if (loading) return <div className="p-4">Loading...</div>
   if (error) return <div className="p-4 text-red-500">{error}</div>
 
-  return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 mt-[30px]">
-      <button className="flex flex-row justify-start items-center ml-[50px] w-[90px] gap-2 cursor-pointer 
-	bg-gray-200 p-2 hover:bg-gray-400 transition-colors"
-	onClick={() => navigate(-1)}>
-	<ArrowLeftIcon className="w-5 h-5"/>
-	<p>Back</p>
-      </button>
-      <div className="max-w-4xl mx-auto">
-	<div className="mb-8">
-          <div className="flex items-center justify-between">
+return (
+  <div className="min-h-screen bg-gray-50 py-4 sm:py-8 px-4 sm:px-6 lg:px-8 mt-4 sm:mt-[30px] pb-20 sm:pb-8">
+    <button className="flex flex-row justify-start items-center mb-4 mt-8 sm:ml-[50px] sm:mt-0 w-auto gap-2 cursor-pointer 
+      bg-gray-200 p-2 sm:p-3 hover:bg-gray-400 transition-colors rounded"
+      onClick={() => navigate(-1)}>
+      <ArrowLeftIcon className="w-5 h-5"/>
+      <p className="text-sm sm:text-base">Back</p>
+    </button>
+    
+    <div className="max-w-4xl mx-auto">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
             <div className="flex items-center">
-              <div className="flex items-center">
-                <PencilSquareIcon className="h-8 w-8 text-blue-600 mr-3" />
-                <h1 className="text-2xl font-bold text-gray-900">Update Post</h1>
-              </div>
+              <PencilSquareIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 mr-2 sm:mr-3" />
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Update Post</h1>
             </div>
           </div>
         </div>
-
-	<div className="bg-white border border-slate-300">
-          <form onSubmit={handleSubmit} className="p-6">
-	    <div className="mb-6">
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                  Title
-                </label>
-                <input
-                  id="title"
-                  name="title"
-                  type="text"
-                  value={post.title}
-                  onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400`}
-                  placeholder="Enter your post title..."
-                />
-	   </div>
-           <div className="mb-6">
-             <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
-               Content
-             </label>           
-             <textarea 
-               className="w-full outline-none border border-gray-200 p-3 focus:border-blue-500 resize-none" 
-               name="content"
-               cols="50" 
-               rows="15"
-               placeholder="Write your post content..."
-               value={post.content}
-               onChange={handleInputChange}
-             />
-	   </div>  
+      </div>
+      
+      <div className="bg-white border border-slate-300">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6">
+          <div className="mb-4 sm:mb-6">
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              Title
+            </label>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              value={post.title}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400"
+              placeholder="Enter your post title..."
+            />
+          </div>
           
-            <div className="flex items-center gap-2">
-              <input className="cursor-pointer"
-                type="checkbox" 
-                id="published"
-                name="published"
-                checked={post.published}
-                onChange={(e) => setPost(prev => ({ ...prev, published: e.target.checked }))}
-              />
-              <label htmlFor="published">Published</label>
-            </div>
+          <div className="mb-4 sm:mb-6">
+            <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-2">
+              Content
+            </label>           
+            <textarea 
+              className="w-full outline-none border border-gray-200 p-3 focus:border-blue-500 resize-none" 
+              name="content"
+              cols="50" 
+              rows="12"
+              placeholder="Write your post content..."
+              value={post.content}
+              onChange={handleInputChange}
+            />
+          </div>  
           
-            <div className="flex gap-4 mt-4">
-              <button 
-                type="submit"
-                className="bg-blue-500 text-white px-6 py-2 hover:bg-blue-600 cursor-pointer"
-              >
-                Update
-              </button>
-              <button 
-                type="button"
-                onClick={handleDelete}
-                className="bg-red-500 text-white px-6 py-2 hover:bg-red-600 cursor-pointer"
-              >
-                Delete
-              </button>
-              <button 
-                type="button"
-                onClick={() => navigate(-1)}
-                className="bg-gray-500 text-white px-6 py-2 hover:bg-gray-600 cursor-pointer"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-	</div>
+          <div className="flex items-center gap-2 mb-4 sm:mb-6">
+            <input className="cursor-pointer"
+              type="checkbox" 
+              id="published"
+              name="published"
+              checked={post.published}
+              onChange={(e) => setPost(prev => ({ ...prev, published: e.target.checked }))}
+            />
+            <label htmlFor="published" className="text-sm sm:text-base">Published</label>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4">
+            <button 
+              type="submit"
+              className="bg-blue-500 text-white px-4 sm:px-6 py-2 hover:bg-blue-600 cursor-pointer"
+            >
+              Update
+            </button>
+            <button 
+              type="button"
+              onClick={handleDelete}
+              className="bg-red-500 text-white px-4 sm:px-6 py-2 hover:bg-red-600 cursor-pointer"
+            >
+              Delete
+            </button>
+            <button 
+              type="button"
+              onClick={() => navigate(-1)}
+              className="bg-gray-500 text-white px-4 sm:px-6 py-2 hover:bg-gray-600 cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  )
-} 
+  </div>
+)
+}
 
 export default PostEdit
