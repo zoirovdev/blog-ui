@@ -609,7 +609,7 @@ return (
     {/* Back Button */}
     <button className="flex flex-row justify-start items-center 
       w-auto max-w-[120px] gap-2 cursor-pointer 
-      bg-gray-200 p-2 sm:p-3 hover:bg-gray-400 transition-colors rounded-lg"
+      bg-gray-200 p-2 sm:p-3 hover:bg-gray-400 transition-colors"
       onClick={() => navigate(-1)}>
       <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5"/>
       <p className="text-sm sm:text-base">Back</p>
@@ -621,7 +621,7 @@ return (
       min-h-[60vh] 
       py-6 sm:py-8 
       px-4 sm:px-6 lg:px-10 
-      rounded-lg shadow-sm">
+      shadow-sm">
       
       {/* Post Title */}
       <h1 className="mb-4 sm:mb-6 p-2 sm:p-4 
@@ -666,7 +666,7 @@ return (
       <div className="flex flex-row sm:flex-row sm:justify-between 
         bg-white w-full max-w-4xl 
         py-4 px-4 sm:px-6 lg:px-8 
-        rounded-lg shadow-sm gap-4 sm:gap-2">
+        shadow-sm gap-4 sm:gap-2">
         
         {/* Like */}
         <div className="flex flex-row items-center gap-2 justify-center sm:justify-start">
@@ -757,7 +757,7 @@ return (
     {shareModal && (
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm 
         flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl 
+        <div className="bg-white shadow-xl 
           w-full max-w-md mx-4 
           p-6">
           
@@ -773,14 +773,14 @@ return (
           
           <div className="space-y-4">
             <div className="flex items-center space-x-3 p-3 
-              border border-gray-200 rounded-lg bg-gray-50">
+              border border-gray-200 bg-gray-50">
               <span className="text-sm text-gray-600 flex-1 truncate">
                 {window.location.href}
               </span>
               <button 
                 onClick={copyToClipboard}
                 className="px-4 py-2 bg-blue-500 text-white 
-                  text-sm rounded-md hover:bg-blue-600 
+                  text-sm hover:bg-blue-600 
                   transition-colors cursor-pointer
                   whitespace-nowrap"
               >
@@ -796,7 +796,7 @@ return (
     {commentModal && (
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm 
         flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg shadow-xl 
+        <div className="bg-white shadow-xl 
           w-full max-w-lg mx-4 
           p-6 max-h-[90vh] overflow-y-auto">
           
@@ -813,7 +813,7 @@ return (
           <div className="flex flex-col space-y-4">
             <textarea 
               rows="6" 
-              className="outline-none p-4 border border-gray-300 rounded-lg
+              className="outline-none p-4 border border-gray-300
                 resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200
                 text-sm sm:text-base"
               placeholder="Share your thoughts..."
@@ -826,7 +826,7 @@ return (
             <button 
               className="w-full sm:w-auto sm:self-end
                 px-6 py-3 bg-blue-500 text-white 
-                text-sm sm:text-base rounded-lg 
+                text-sm sm:text-base 
                 hover:bg-blue-600 transition-colors cursor-pointer
                 font-medium"
               onClick={() => {
