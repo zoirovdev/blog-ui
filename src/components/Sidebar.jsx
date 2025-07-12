@@ -39,22 +39,22 @@ return (
     </div>
 
     {/* Mobile Bottom Navigation */}
-    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-300 z-50">
-      <div className="flex justify-around items-center h-16 px-4">
+    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white h-16 border-t border-slate-300 z-50">
+      <div className="flex flex-row justify-around items-center">
         <Link to={"/"} 
-          className={`flex flex-col items-center justify-center p-2 rounded-lg hover:bg-gray-100
+          className={`basis-1/3 flex flex-col items-center justify-center p-2 hover:bg-gray-200
           ${location.pathname === '/' ? 'bg-gray-200' : ''}`}>
           <HomeIcon className="w-6 h-6"/>
           <span className="text-xs mt-1">Home</span>
         </Link>
         <Link to={"/myposts"} 
-          className={`flex flex-col items-center justify-center p-2 rounded-lg hover:bg-gray-100
+          className={`basis-1/3 flex flex-col items-center justify-center p-2 hover:bg-gray-200
           ${location.pathname === '/myposts' ? 'bg-gray-200' : ''}`}>
           <Square2StackIcon className="w-6 h-6"/>
           <span className="text-xs mt-1">My Posts</span>
         </Link>
         <Link to="/new" 
-          className={`flex flex-col items-center justify-center p-2 rounded-lg hover:bg-gray-100
+          className={`basis-1/3 flex flex-col items-center justify-center p-2 hover:bg-gray-200
           ${location.pathname === '/new' ? 'bg-gray-200' : ''}`}>
           <PlusIcon className='w-6 h-6'/>
           <span className="text-xs mt-1">Create</span>
