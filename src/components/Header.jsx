@@ -66,7 +66,6 @@ return (
     <img src="/anchor.svg" alt="anchor" className="h-5 w-5 object-cover ml-2 sm:ml-[10px]"/>
     <h2 className="font-sans text-lg sm:text-xl antialiased font-bold font-stretch-extra-condensed tracking-tight">
       <span className="hidden sm:inline">Dengiz</span>
-      <span className="sm:hidden">D</span>
     </h2>
     
     {/* Search - responsive width and positioning */}
