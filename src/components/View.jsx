@@ -602,14 +602,14 @@ const View = () => {
 return (
   <div className="bg-gray-100 min-h-screen flex flex-col 
     px-4 sm:px-6 md:pl-8 lg:pl-[200px] 
-    py-4 sm:py-6 md:pt-[60px] lg:pt-[100px] 
+    pt-16 sm:pt-12 md:pt-[60px] lg:pt-[100px] 
     pb-20 sm:pb-16 md:pb-[50px] lg:pb-[50px] 
     gap-4">
     
     {/* Back Button */}
     <button className="flex flex-row justify-start items-center 
       w-auto max-w-[120px] gap-2 cursor-pointer 
-      bg-gray-200 p-2 sm:p-3 hover:bg-gray-400 transition-colors"
+      bg-gray-200 p-2 sm:p-3  hover:bg-gray-400 transition-colors"
       onClick={() => navigate(-1)}>
       <ArrowLeftIcon className="w-4 h-4 sm:w-5 sm:h-5"/>
       <p className="text-sm sm:text-base">Back</p>
