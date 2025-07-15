@@ -32,7 +32,7 @@ const MyPosts = () => {
       }
 
       const response = await fetch(
-        `${API_BASE_URL}/api/user/posts?page=${page}&limit=${limit}&authorId=${userId}`,
+        `${API_BASE_URL}/api/users/posts?page=${page}&limit=${limit}&authorId=${userId}`,
 	{
           headers: 
 	  {

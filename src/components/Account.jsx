@@ -61,7 +61,7 @@ const Account = () => {
 	return
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/accounts/${username}/posts`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/${username}/posts`, {
         method: 'GET',
 	headers: {
           "Content-Type": "application/json",

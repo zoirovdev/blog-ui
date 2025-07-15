@@ -42,7 +42,7 @@ const Profile = () => {
         return
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/auth/profile`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -159,7 +159,7 @@ const Profile = () => {
         return
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/liked-posts`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/${user.id}/liked-posts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -213,7 +213,7 @@ const Profile = () => {
       }
 
 
-      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/saved-posts`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/${user.id}/saved-posts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -266,7 +266,7 @@ const Profile = () => {
       }
 
 
-      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/shared-posts`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/${user.id}/shared-posts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -320,7 +320,7 @@ const Profile = () => {
       }
 
 
-      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/commented-posts`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/${user.id}/commented-posts`, {
          headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -372,7 +372,7 @@ const Profile = () => {
       }
 
 
-      const response = await fetch(`${API_BASE_URL}/api/user/${user.id}/read-posts`, {
+      const response = await fetch(`${API_BASE_URL}/api/users/${user.id}/read-posts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
