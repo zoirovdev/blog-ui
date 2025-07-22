@@ -453,10 +453,7 @@ const Profile = () => {
         {/* Profile Picture */}
         <div className="w-24 h-24 sm:w-32 sm:h-32 lg:w-[150px] lg:h-[150px] flex flex-col items-center 
           justify-center border border-slate-300 rounded-[50%] mx-auto lg:mx-0 shrink-0">
-          {user.avatar 
-            ? <img src={`${API_BASE_URL}/api/profile/image/${user.id}`} alt='user image' className="w-full h-full object-cover rounded-[50%]"/>
-            : <UserIcon className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 text-blue-500"/>
-          }
+          <UserIcon className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 text-blue-500"/>
         </div>
 
         {/* User Info */}
@@ -548,14 +545,8 @@ const Profile = () => {
                 placeholder="Lastname"
                 value={formData.lastName || ''}
                 onChange={(e) => setFormData({...formData, lastName: e.target.value})}/> 
-              <input 
-                className="block w-full border border-slate-300 p-3 rounded 
-                cursor-pointer bg-gray-50 focus:outline-none" 
-                id="file_input" 
-                type="file"
-                accept="image/jpeg,image/jpg,image/png,image/webp"
-                onChange={(e) => setFormData({...formData, avatar: e.target.files[0]})}/>
-              <button type="submit" className="bg-blue-400 hover:bg-blue-500 text-white p-3 rounded transition-colors"
+              <button type="submit" 
+		className="bg-blue-400 hover:bg-blue-500 text-white p-3 rounded transition-colors"
                 onClick={() => { handleForm(); }}>Save</button>
             </div>
           </div>
